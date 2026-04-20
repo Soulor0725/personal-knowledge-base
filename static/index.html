@@ -3371,9 +3371,6 @@
                 .then(data => {
                     console.log('Article data:', data);
                     
-                    // 先解析 Markdown 内容
-                    const parsedContent = marked.parse(data.content);
-                    
                     // 显示文章
                     articleList.innerHTML = `
                         <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.1); border-radius:20px;padding:36px;backdrop-filter: blur(10px);">
@@ -3386,7 +3383,7 @@
                                 </div>
                             </div>
                             <div class="article-content" style="color:#cbd5e1;line-height:1.9;margin-bottom:36px;">
-                                ${parsedContent}
+                                <!-- 内容将通过 JavaScript 插入 -->
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:24px;">
                                 <div class="article-meta">
@@ -3401,6 +3398,10 @@
                             </div>
                         </div>
                     `;
+                    
+                    // 插入解析后的 Markdown 内容
+                    const articleContent = articleList.querySelector('.article-content');
+                    articleContent.innerHTML = marked.parse(data.content);
                     
                     // 增加浏览次数
                     fetch(`${API_URL}/articles/${id}/view`, {
