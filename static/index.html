@@ -937,43 +937,45 @@
             color: inherit !important;
         }
         
+        /* 代码块容器样式 */
+        .code-block-container {
+            margin: 16px 0 !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        /* 代码块头部样式 */
+        .code-block-header {
+            background: rgba(15, 23, 42, 0.8) !important;
+            padding: 8px 16px !important;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2) !important;
+            font-size: 12px !important;
+            color: #94a3b8 !important;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+        }
+        
         /* 代码块样式 */
         .code-block {
-            background: rgba(15, 23, 42, 0.9) !important;
-            border: 1px solid rgba(148, 163, 184, 0.2) !important;
-            border-radius: 8px !important;
+            background: rgba(15, 23, 42, 0.95) !important;
+            border: none !important;
             padding: 16px !important;
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
             font-size: 14px !important;
             line-height: 1.5 !important;
             overflow-x: auto !important;
-            margin: 16px 0 !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
         }
         
-        /* 代码高亮样式 */
-        .code-block .keyword {
-            color: #0000ff !important; /* 关键字 - 蓝色 */
-        }
-        
-        .code-block .string {
-            color: #008000 !important; /* 字符串 - 绿色 */
-        }
-        
-        .code-block .comment {
-            color: #808080 !important; /* 注释 - 灰色 */
-            font-style: italic !important;
-        }
-        
-        .code-block .number {
-            color: #ff8c00 !important; /* 数字 - 橙色 */
-        }
-        
-        .code-block .function {
-            color: #000000 !important; /* 函数 - 黑色 */
-        }
-        
-        .code-block .operator {
-            color: #ff8c00 !important; /* 运算符 - 橙色 */
+        /* 代码块内的代码 */
+        .code-block code {
+            background: transparent !important;
+            padding: 0 !important;
+            color: #e2e8f0 !important;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
         }
         
         /* 文章内容中的代码高亮类样式 */
@@ -3425,53 +3427,103 @@
                     const articleContent = articleList.querySelector('.article-content');
                     // 使用简单的 Markdown 解析函数
                     function simpleMarkdownParser(text) {
-                        // 处理代码块 - 更精确的正则表达式
-                        text = text.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
-                            return `<pre class="code-block"><code class="language-${lang || 'plain'}">${code || ''}</code></pre>`;
-                        });
-                        
-                        // 处理换行
-                        text = text.replace(/\n/g, '<br>');
-                        
-                        return text;
+                        // 直接处理代码块，不使用复杂的正则表达式
+                        if (text.includes('```')) {
+                            // 分割文本，处理代码块
+                            const parts = text.split('```');
+                            let result = '';
+                            
+                            for (let i = 0; i < parts.length; i++) {
+                                if (i % 2 === 0) {
+                                    // 普通文本
+                                    result += parts[i].replace(/\n/g, '<br>');
+                                } else {
+                                    // 代码块
+                                    const codeParts = parts[i].split('\n');
+                                    const lang = codeParts[0].trim() || 'plain';
+                                    const code = codeParts.slice(1).join('\n');
+                                    
+                                    result += `<pre class="code-block"><code class="language-${lang}">${code}</code></pre>`;
+                                }
+                            }
+                            
+                            return result;
+                        } else {
+                            // 没有代码块，直接处理换行
+                            return text.replace(/\n/g, '<br>');
+                        }
                     }
                     
                     // 解析 Markdown 内容
                     try {
-                        articleContent.innerHTML = simpleMarkdownParser(data.content);
+                        // 直接处理代码块，参考 CSDN 和博客园的处理方式
+                        let content = data.content;
                         
-                        // 尝试使用 highlight.js 高亮代码
-                        if (typeof hljs !== 'undefined') {
-                            document.querySelectorAll('pre code').forEach((block) => {
-                                hljs.highlightElement(block);
-                            });
-                        } else {
-                            // 如果 highlight.js 不可用，使用简单的语法高亮
-                            document.querySelectorAll('pre code').forEach((block) => {
-                                const code = block.textContent;
-                                const lang = block.className.replace('language-', '');
-                                
-                                let highlightedCode = code;
-                                if (lang === 'python') {
-                                    highlightedCode = code
-                                        // 关键字
-                                        .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span class="keyword">$1</span>')
-                                        // 字符串
-                                        .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span class="string">$&</span>')
-                                        // 注释
-                                        .replace(/#.*$/gm, '<span class="comment">$&</span>')
-                                        // 数字
-                                        .replace(/\b\d+\b/g, '<span class="number">$&</span>')
-                                        // 函数名
-                                        .replace(/\bdef\s+(\w+)/g, 'def <span class="function">$1</span>')
-                                        // 类名
-                                        .replace(/\bclass\s+(\w+)/g, 'class <span class="function">$1</span>')
-                                        // 运算符
-                                        .replace(/([=+\-*/%&|^!<>=])/g, '<span class="operator">$1</span>');
+                        // 简单处理代码块，使用字符串分割
+                        if (content.includes('```')) {
+                            const parts = content.split('```');
+                            let result = '';
+                            
+                            for (let i = 0; i < parts.length; i++) {
+                                if (i % 2 === 0) {
+                                    // 普通文本
+                                    result += parts[i].replace(/\n/g, '<br>');
+                                } else {
+                                    // 代码块
+                                    const codeParts = parts[i].split('\n');
+                                    const lang = codeParts[0] ? codeParts[0].trim() : 'plain';
+                                    const code = codeParts.slice(1).join('\n');
+                                    
+                                    // 应用语法高亮
+                                    let highlightedCode = code;
+                                    if (lang === 'python') {
+                                        highlightedCode = code
+                                            // 关键字
+                                            .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span style="color: #0000ff;">$1</span>')
+                                            // 字符串
+                                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
+                                            // 注释
+                                            .replace(/#.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
+                                            // 数字
+                                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
+                                            // 函数名
+                                            .replace(/\bdef\s+(\w+)/g, 'def <span style="color: #000000;">$1</span>')
+                                            // 类名
+                                            .replace(/\bclass\s+(\w+)/g, 'class <span style="color: #000000;">$1</span>')
+                                            // 运算符
+                                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
+                                    } else if (lang === 'javascript' || lang === 'js') {
+                                        highlightedCode = code
+                                            // 关键字
+                                            .replace(/\b(var|let|const|function|if|else|for|while|do|switch|case|default|break|continue|return|try|catch|finally|throw|new|this|typeof|instanceof|in|of|from|import|export|async|await)\b/g, '<span style="color: #0000ff;">$1</span>')
+                                            // 字符串
+                                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
+                                            // 注释
+                                            .replace(/\/\/.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
+                                            .replace(/\/\*[\s\S]*?\*\//g, '<span style="color: #808080; font-style: italic;">$&</span>')
+                                            // 数字
+                                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
+                                            // 函数名
+                                            .replace(/\bfunction\s+(\w+)/g, 'function <span style="color: #000000;">$1</span>')
+                                            // 方法调用
+                                            .replace(/(\w+)\s*\(/g, '<span style="color: #000000;">$1</span>(')
+                                            // 运算符
+                                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
+                                    }
+                                    
+                                    result += `<div class="code-block-container">
+                                        <div class="code-block-header">
+                                            <span class="code-language">${lang}</span>
+                                        </div>
+                                        <pre class="code-block"><code class="language-${lang}">${highlightedCode}</code></pre>
+                                    </div>`;
                                 }
-                                
-                                block.innerHTML = highlightedCode;
-                            });
+                            }
+                            
+                            articleContent.innerHTML = result;
+                        } else {
+                            // 没有代码块，直接处理换行
+                            articleContent.innerHTML = content.replace(/\n/g, '<br>');
                         }
                     } catch (error) {
                         console.error('Error parsing markdown:', error);
