@@ -3443,7 +3443,18 @@
                         });
                         
                         // 处理 Markdown 链接
-                        contentWithPlaceholders = contentWithPlaceholders.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline; cursor: pointer;">$1</a>');
+                        contentWithPlaceholders = contentWithPlaceholders.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline; cursor: pointer; position: relative; z-index: 100;">$1</a>');
+                        
+                        // 添加链接点击事件处理
+                        setTimeout(() => {
+                            const links = articleContent.querySelectorAll('a');
+                            links.forEach(link => {
+                                link.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    window.open(this.href, '_blank');
+                                });
+                            });
+                        }, 100);
                         
                         // 处理换行
                         contentWithPlaceholders = contentWithPlaceholders.replace(/\n/g, '<br>');
