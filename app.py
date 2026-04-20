@@ -180,9 +180,10 @@ def login():
         return jsonify({'error': '用户名或密码错误'}), 401
     
     token = generate_token(user['id'])
-    # 检查 user 中是否有 'name' 列
+    # 检查 user 中是否有对应的列
     name = user['name'] if 'name' in user.keys() else ''
-    return jsonify({'id': user['id'], 'username': user['username'], 'name': name, 'token': token, 'message': '登录成功'})
+    avatar = user['avatar'] if 'avatar' in user.keys() else ''
+    return jsonify({'id': user['id'], 'username': user['username'], 'name': name, 'avatar': avatar, 'token': token, 'message': '登录成功'})
 
 @app.route('/')
 def index():
