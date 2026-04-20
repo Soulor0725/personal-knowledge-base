@@ -1525,6 +1525,8 @@
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/fold/markdown-fold.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
     <script>
         const API_URL = '/api';
         console.log('API_URL initialized:', API_URL);
@@ -3323,75 +3325,21 @@
             }
             
             function renderArticle(id) {
-                // 配置Marked.js
+                // 配置Marked.js，使用 highlight.js 实现代码高亮
                 marked.setOptions({
                     breaks: true,
                     gfm: true,
-                    sanitize: false, // 允许HTML标签，用于代码高亮
                     highlight: function(code, lang) {
-                        // 简单的语法高亮
-                        if (!lang) return code;
-                        
-                        // 针对不同语言的高亮
-                        if (lang === 'python') {
-                            return code
-                                // 关键字
-                                .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span class="keyword">$1</span>')
-                                // 字符串
-                                .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span class="string">$&</span>')
-                                // 注释
-                                .replace(/#.*$/gm, '<span class="comment">$&</span>')
-                                // 数字
-                                .replace(/\b\d+\b/g, '<span class="number">$&</span>')
-                                // 函数名
-                                .replace(/\bdef\s+(\w+)/g, 'def <span class="function">$1</span>')
-                                // 类名
-                                .replace(/\bclass\s+(\w+)/g, 'class <span class="function">$1</span>')
-                                // 运算符
-                                .replace(/([=+\-*/%&|^!<>=])/g, '<span class="operator">$1</span>');
-                        } else if (lang === 'javascript' || lang === 'js') {
-                            return code
-                                // 关键字
-                                .replace(/\b(var|let|const|function|if|else|for|while|do|switch|case|default|break|continue|return|try|catch|finally|throw|new|this|typeof|instanceof|in|of|from|import|export|async|await)\b/g, '<span class="keyword">$1</span>')
-                                // 字符串
-                                .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span class="string">$&</span>')
-                                // 注释
-                                .replace(/\/\/.*$/gm, '<span class="comment">$&</span>')
-                                .replace(/\/\*[\s\S]*?\*\//g, '<span class="comment">$&</span>')
-                                // 数字
-                                .replace(/\b\d+\b/g, '<span class="number">$&</span>')
-                                // 函数名
-                                .replace(/\bfunction\s+(\w+)/g, 'function <span class="function">$1</span>')
-                                // 方法调用
-                                .replace(/(\w+)\s*\(/g, '<span class="function">$1</span>(')
-                                // 运算符
-                                .replace(/([=+\-*/%&|^!<>=])/g, '<span class="operator">$1</span>');
-                        } else if (lang === 'html') {
-                            return code
-                                // 标签
-                                .replace(/<(\w+)/g, '<span class="keyword">&lt;$1</span>')
-                                .replace(/<\/(\w+)>/g, '<span class="keyword">&lt;/$1&gt;</span>')
-                                // 属性
-                                .replace(/(\w+)\s*=/g, '<span class="function">$1</span>=')
-                                // 属性值
-                                .replace(/=(['"])(?:\\.|[^\\])*?\1/g, '=<span class="string">$&</span>')
-                                // 注释
-                                .replace(/<!--[\s\S]*?-->/g, '<span class="comment">$&</span>');
-                        } else if (lang === 'css') {
-                            return code
-                                // 选择器
-                                .replace(/([.#]?[\w-]+)\s*\{/g, '<span class="keyword">$1</span>{')
-                                // 属性
-                                .replace(/(\w+)\s*:/g, '<span class="function">$1</span>:')
-                                // 值
-                                .replace(/:\s*([^;]+);/g, ': <span class="string">$1</span>;')
-                                // 注释
-                                .replace(/\/\*[\s\S]*?\*\//g, '<span class="comment">$&</span>');
+                        if (lang && hljs.getLanguage(lang)) {
+                            try {
+                                return hljs.highlight(code, { language: lang }).value;
+                            } catch (err) {
+                                console.error('Highlight error:', err);
+                            }
                         }
-                        
-                        return code;
+                        return hljs.highlightAuto(code).value;
                     },
-                    langPrefix: 'language-'
+                    langPrefix: 'hljs language-'
                 });
             
             const articleList = document.getElementById('articleList');
