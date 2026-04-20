@@ -256,24 +256,28 @@
         }
         
         .editor-preview code.language-python .keyword {
-            color: #f472b6 !important;
+            color: #0000ff !important; /* 关键字 - 蓝色 */
         }
         
         .editor-preview code.language-python .string {
-            color: #fbbf24 !important;
+            color: #008000 !important; /* 字符串 - 绿色 */
         }
         
         .editor-preview code.language-python .comment {
-            color: #64748b !important;
+            color: #808080 !important; /* 注释 - 灰色 */
             font-style: italic !important;
         }
         
         .editor-preview code.language-python .number {
-            color: #34d399 !important;
+            color: #ff8c00 !important; /* 数字 - 橙色 */
         }
         
         .editor-preview code.language-python .function {
-            color: #60a5fa !important;
+            color: #000000 !important; /* 函数 - 黑色 */
+        }
+        
+        .editor-preview code.language-python .operator {
+            color: #ff8c00 !important; /* 运算符 - 橙色 */
         }
         
         .editor-preview code {
@@ -286,34 +290,42 @@
         
         /* 代码块样式 */
         
-        /* 代码语法高亮 */
+        /* 代码语法高亮 - 参照博客园样式 */
         .CodeMirror span.cm-keyword {
-            color: #f472b6 !important;
+            color: #0000ff !important; /* 关键字 - 蓝色 */
         }
         
         .CodeMirror span.cm-string {
-            color: #fbbf24 !important;
+            color: #008000 !important; /* 字符串 - 绿色 */
         }
         
         .CodeMirror span.cm-comment {
-            color: #64748b !important;
+            color: #808080 !important; /* 注释 - 灰色 */
             font-style: italic !important;
         }
         
         .CodeMirror span.cm-number {
-            color: #34d399 !important;
+            color: #ff8c00 !important; /* 数字 - 橙色 */
         }
         
         .CodeMirror span.cm-variable {
-            color: #e2e8f0 !important;
+            color: #000000 !important; /* 变量 - 黑色 */
         }
         
         .CodeMirror span.cm-function {
-            color: #60a5fa !important;
+            color: #000000 !important; /* 函数 - 黑色 */
         }
         
         .CodeMirror span.cm-operator {
-            color: #f472b6 !important;
+            color: #ff8c00 !important; /* 运算符 - 橙色 */
+        }
+        
+        .CodeMirror span.cm-property {
+            color: #000000 !important; /* 属性 - 黑色 */
+        }
+        
+        .CodeMirror span.cm-punctuation {
+            color: #000000 !important; /* 标点 - 黑色 */
         }
         
         .editor-preview h1,
