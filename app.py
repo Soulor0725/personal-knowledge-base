@@ -185,7 +185,9 @@ def login():
         return jsonify({'error': '用户名或密码错误'}), 401
     
     token = generate_token(user['id'])
-    return jsonify({'id': user['id'], 'username': user['username'], 'name': user.get('name', ''), 'token': token, 'message': '登录成功'})
+    # 检查 user 中是否有 'name' 列
+    name = user['name'] if 'name' in user.keys() else ''
+    return jsonify({'id': user['id'], 'username': user['username'], 'name': name, 'token': token, 'message': '登录成功'})
 
 @app.route('/api/auth/me', methods=['GET', 'PUT'])
 @login_required
