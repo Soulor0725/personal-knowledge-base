@@ -109,6 +109,7 @@ def init_db():
         )
     ''')
 
+
     # 检查是否已有分类，如果没有则插入默认分类
     cursor.execute('SELECT COUNT(*) FROM categories')
     count = cursor.fetchone()[0]
