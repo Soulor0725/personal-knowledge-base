@@ -3428,7 +3428,8 @@
                     
                     // 插入解析后的 Markdown 内容
                     const articleContent = articleList.querySelector('.article-content');
-                    articleContent.innerHTML = marked.parse(data.content);
+                    // 尝试使用直接调用 marked 函数的方式
+                    articleContent.innerHTML = marked(data.content);
                     
                     // 增加浏览次数
                     fetch(`${API_URL}/articles/${id}/view`, {
