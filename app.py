@@ -109,11 +109,15 @@ def init_db():
         )
     ''')
 
-    # 插入默认分类
-    cursor.execute("INSERT OR IGNORE INTO categories (name, color) VALUES ('技术', '#667eea')")
-    cursor.execute("INSERT OR IGNORE INTO categories (name, color) VALUES ('生活', '#764ba2')")
-    cursor.execute("INSERT OR IGNORE INTO categories (name, color) VALUES ('学习', '#f093fb')")
-    cursor.execute("INSERT OR IGNORE INTO categories (name, color) VALUES ('工作', '#4facfe')")
+    # 检查是否已有分类，如果没有则插入默认分类
+    cursor.execute('SELECT COUNT(*) FROM categories')
+    count = cursor.fetchone()[0]
+    if count == 0:
+        # 只在数据库为空时插入默认分类
+        cursor.execute("INSERT INTO categories (name, color) VALUES ('技术', '#667eea')")
+        cursor.execute("INSERT INTO categories (name, color) VALUES ('生活', '#764ba2')")
+        cursor.execute("INSERT INTO categories (name, color) VALUES ('学习', '#f093fb')")
+        cursor.execute("INSERT INTO categories (name, color) VALUES ('工作', '#4facfe')")
 
     conn.commit()
     conn.close()
