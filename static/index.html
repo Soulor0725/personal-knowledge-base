@@ -937,6 +937,45 @@
             color: inherit !important;
         }
         
+        /* 代码块样式 */
+        .code-block {
+            background: rgba(15, 23, 42, 0.9) !important;
+            border: 1px solid rgba(148, 163, 184, 0.2) !important;
+            border-radius: 8px !important;
+            padding: 16px !important;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+            overflow-x: auto !important;
+            margin: 16px 0 !important;
+        }
+        
+        /* 代码高亮样式 */
+        .code-block .keyword {
+            color: #0000ff !important; /* 关键字 - 蓝色 */
+        }
+        
+        .code-block .string {
+            color: #008000 !important; /* 字符串 - 绿色 */
+        }
+        
+        .code-block .comment {
+            color: #808080 !important; /* 注释 - 灰色 */
+            font-style: italic !important;
+        }
+        
+        .code-block .number {
+            color: #ff8c00 !important; /* 数字 - 橙色 */
+        }
+        
+        .code-block .function {
+            color: #000000 !important; /* 函数 - 黑色 */
+        }
+        
+        .code-block .operator {
+            color: #ff8c00 !important; /* 运算符 - 橙色 */
+        }
+        
         /* 文章内容中的代码高亮类样式 */
         .article-content .keyword {
             color: #0000ff !important; /* 关键字 - 蓝色 */
@@ -3386,9 +3425,9 @@
                     const articleContent = articleList.querySelector('.article-content');
                     // 使用简单的 Markdown 解析函数
                     function simpleMarkdownParser(text) {
-                        // 简单处理代码块
-                        text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
-                            return `<pre><code class="language-${lang || 'plain'}">${code || ''}</code></pre>`;
+                        // 处理代码块 - 更精确的正则表达式
+                        text = text.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
+                            return `<pre class="code-block"><code class="language-${lang || 'plain'}">${code || ''}</code></pre>`;
                         });
                         
                         // 处理换行
@@ -3405,6 +3444,33 @@
                         if (typeof hljs !== 'undefined') {
                             document.querySelectorAll('pre code').forEach((block) => {
                                 hljs.highlightElement(block);
+                            });
+                        } else {
+                            // 如果 highlight.js 不可用，使用简单的语法高亮
+                            document.querySelectorAll('pre code').forEach((block) => {
+                                const code = block.textContent;
+                                const lang = block.className.replace('language-', '');
+                                
+                                let highlightedCode = code;
+                                if (lang === 'python') {
+                                    highlightedCode = code
+                                        // 关键字
+                                        .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span class="keyword">$1</span>')
+                                        // 字符串
+                                        .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span class="string">$&</span>')
+                                        // 注释
+                                        .replace(/#.*$/gm, '<span class="comment">$&</span>')
+                                        // 数字
+                                        .replace(/\b\d+\b/g, '<span class="number">$&</span>')
+                                        // 函数名
+                                        .replace(/\bdef\s+(\w+)/g, 'def <span class="function">$1</span>')
+                                        // 类名
+                                        .replace(/\bclass\s+(\w+)/g, 'class <span class="function">$1</span>')
+                                        // 运算符
+                                        .replace(/([=+\-*/%&|^!<>=])/g, '<span class="operator">$1</span>');
+                                }
+                                
+                                block.innerHTML = highlightedCode;
                             });
                         }
                     } catch (error) {
