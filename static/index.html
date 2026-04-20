@@ -3255,6 +3255,14 @@
                     // 简单的语法高亮
                     if (!lang) return code;
                     
+                    // 先对代码进行 HTML 实体编码，防止标签被错误渲染
+                    code = code
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
+                    
                     // 针对不同语言的高亮
                     if (lang === 'python') {
                         code = code
@@ -3292,14 +3300,14 @@
                     } else if (lang === 'html') {
                         code = code
                             // 标签
-                            .replace(/<(\w+)/g, '<span style="color: #0000ff;">&lt;$1</span>')
-                            .replace(/<\/(\w+)>/g, '<span style="color: #0000ff;">&lt;/$1&gt;</span>')
+                            .replace(/&lt;(\w+)/g, '<span style="color: #0000ff;">&lt;$1</span>')
+                            .replace(/&lt;\/(\w+)&gt;/g, '<span style="color: #0000ff;">&lt;/$1&gt;</span>')
                             // 属性
                             .replace(/(\w+)\s*=/g, '<span style="color: #000000;">$1</span>=')
                             // 属性值
                             .replace(/=(['"])(?:\\.|[^\\])*?\1/g, '=<span style="color: #008000;">$&</span>')
                             // 注释
-                            .replace(/<!--[\s\S]*?-->/g, '<span style="color: #808080; font-style: italic;">$&</span>');
+                            .replace(/&lt;!--[\s\S]*?--&gt;/g, '<span style="color: #808080; font-style: italic;">$&</span>');
                     } else if (lang === 'css') {
                         code = code
                             // 选择器
