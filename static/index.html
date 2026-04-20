@@ -3428,8 +3428,27 @@
                     
                     // 插入解析后的 Markdown 内容
                     const articleContent = articleList.querySelector('.article-content');
-                    // 尝试使用直接调用 marked 函数的方式
-                    articleContent.innerHTML = marked(data.content);
+                    // 尝试使用与其他地方相同的方式调用 marked
+                    try {
+                        // 先检查 marked 对象的结构
+                        console.log('Marked object:', marked);
+                        console.log('Marked methods:', Object.keys(marked));
+                        
+                        // 尝试使用不同的调用方式
+                        if (typeof marked === 'function') {
+                            // 直接调用 marked 函数
+                            articleContent.innerHTML = marked(data.content);
+                        } else if (marked.parse) {
+                            // 使用 marked.parse 方法
+                            articleContent.innerHTML = marked.parse(data.content);
+                        } else {
+                            // 回退到原始内容
+                            articleContent.textContent = data.content;
+                        }
+                    } catch (error) {
+                        console.error('Error parsing markdown:', error);
+                        articleContent.textContent = data.content;
+                    }
                     
                     // 增加浏览次数
                     fetch(`${API_URL}/articles/${id}/view`, {
