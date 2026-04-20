@@ -243,11 +243,37 @@
             border: 1px solid rgba(148, 163, 184, 0.2) !important;
             border-radius: 8px !important;
             padding: 16px !important;
-            color: #a78bfa !important;
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
             font-size: 14px !important;
             line-height: 1.5 !important;
             overflow-x: auto !important;
+        }
+        
+        .editor-preview pre code {
+            background: transparent !important;
+            padding: 0 !important;
+            color: inherit !important;
+        }
+        
+        .editor-preview code.language-python .keyword {
+            color: #f472b6 !important;
+        }
+        
+        .editor-preview code.language-python .string {
+            color: #fbbf24 !important;
+        }
+        
+        .editor-preview code.language-python .comment {
+            color: #64748b !important;
+            font-style: italic !important;
+        }
+        
+        .editor-preview code.language-python .number {
+            color: #34d399 !important;
+        }
+        
+        .editor-preview code.language-python .function {
+            color: #60a5fa !important;
         }
         
         .editor-preview code {
@@ -261,32 +287,32 @@
         /* 代码块样式 */
         
         /* 代码语法高亮 */
-        .cm-s-easymde span.cm-keyword {
+        .CodeMirror span.cm-keyword {
             color: #f472b6 !important;
         }
         
-        .cm-s-easymde span.cm-string {
+        .CodeMirror span.cm-string {
             color: #fbbf24 !important;
         }
         
-        .cm-s-easymde span.cm-comment {
+        .CodeMirror span.cm-comment {
             color: #64748b !important;
             font-style: italic !important;
         }
         
-        .cm-s-easymde span.cm-number {
+        .CodeMirror span.cm-number {
             color: #34d399 !important;
         }
         
-        .cm-s-easymde span.cm-variable {
+        .CodeMirror span.cm-variable {
             color: #e2e8f0 !important;
         }
         
-        .cm-s-easymde span.cm-function {
+        .CodeMirror span.cm-function {
             color: #60a5fa !important;
         }
         
-        .cm-s-easymde span.cm-operator {
+        .CodeMirror span.cm-operator {
             color: #f472b6 !important;
         }
         
