@@ -873,6 +873,7 @@
             font-size: 14px !important;
             line-height: 1.5 !important;
             overflow-x: auto !important;
+            color: #e2e8f0 !important;
         }
         
         #articleList code {
@@ -881,28 +882,29 @@
             color: inherit !important;
         }
         
-        #articleList code.language-python .keyword {
+        /* 代码高亮类样式 */
+        #articleList .keyword {
             color: #0000ff !important; /* 关键字 - 蓝色 */
         }
         
-        #articleList code.language-python .string {
+        #articleList .string {
             color: #008000 !important; /* 字符串 - 绿色 */
         }
         
-        #articleList code.language-python .comment {
+        #articleList .comment {
             color: #808080 !important; /* 注释 - 灰色 */
             font-style: italic !important;
         }
         
-        #articleList code.language-python .number {
+        #articleList .number {
             color: #ff8c00 !important; /* 数字 - 橙色 */
         }
         
-        #articleList code.language-python .function {
+        #articleList .function {
             color: #000000 !important; /* 函数 - 黑色 */
         }
         
-        #articleList code.language-python .operator {
+        #articleList .operator {
             color: #ff8c00 !important; /* 运算符 - 橙色 */
         }
         .article-tags {
@@ -3255,69 +3257,61 @@
                     // 简单的语法高亮
                     if (!lang) return code;
                     
-                    // 先对代码进行 HTML 实体编码，防止标签被错误渲染
-                    code = code
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#39;');
-                    
                     // 针对不同语言的高亮
                     if (lang === 'python') {
-                        code = code
+                        return code
                             // 关键字
-                            .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span style="color: #0000ff;">$1</span>')
+                            .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span class="keyword">$1</span>')
                             // 字符串
-                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
+                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span class="string">$&</span>')
                             // 注释
-                            .replace(/#.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
+                            .replace(/#.*$/gm, '<span class="comment">$&</span>')
                             // 数字
-                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
+                            .replace(/\b\d+\b/g, '<span class="number">$&</span>')
                             // 函数名
-                            .replace(/\bdef\s+(\w+)/g, 'def <span style="color: #000000;">$1</span>')
+                            .replace(/\bdef\s+(\w+)/g, 'def <span class="function">$1</span>')
                             // 类名
-                            .replace(/\bclass\s+(\w+)/g, 'class <span style="color: #000000;">$1</span>')
+                            .replace(/\bclass\s+(\w+)/g, 'class <span class="function">$1</span>')
                             // 运算符
-                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
+                            .replace(/([=+\-*/%&|^!<>=])/g, '<span class="operator">$1</span>');
                     } else if (lang === 'javascript' || lang === 'js') {
-                        code = code
+                        return code
                             // 关键字
-                            .replace(/\b(var|let|const|function|if|else|for|while|do|switch|case|default|break|continue|return|try|catch|finally|throw|new|this|typeof|instanceof|in|of|from|import|export|async|await)\b/g, '<span style="color: #0000ff;">$1</span>')
+                            .replace(/\b(var|let|const|function|if|else|for|while|do|switch|case|default|break|continue|return|try|catch|finally|throw|new|this|typeof|instanceof|in|of|from|import|export|async|await)\b/g, '<span class="keyword">$1</span>')
                             // 字符串
-                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
+                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span class="string">$&</span>')
                             // 注释
-                            .replace(/\/\/.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
-                            .replace(/\/\*[\s\S]*?\*\//g, '<span style="color: #808080; font-style: italic;">$&</span>')
+                            .replace(/\/\/.*$/gm, '<span class="comment">$&</span>')
+                            .replace(/\/\*[\s\S]*?\*\//g, '<span class="comment">$&</span>')
                             // 数字
-                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
+                            .replace(/\b\d+\b/g, '<span class="number">$&</span>')
                             // 函数名
-                            .replace(/\bfunction\s+(\w+)/g, 'function <span style="color: #000000;">$1</span>')
+                            .replace(/\bfunction\s+(\w+)/g, 'function <span class="function">$1</span>')
                             // 方法调用
-                            .replace(/(\w+)\s*\(/g, '<span style="color: #000000;">$1</span>(')
+                            .replace(/(\w+)\s*\(/g, '<span class="function">$1</span>(')
                             // 运算符
-                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
+                            .replace(/([=+\-*/%&|^!<>=])/g, '<span class="operator">$1</span>');
                     } else if (lang === 'html') {
-                        code = code
+                        return code
                             // 标签
-                            .replace(/&lt;(\w+)/g, '<span style="color: #0000ff;">&lt;$1</span>')
-                            .replace(/&lt;\/(\w+)&gt;/g, '<span style="color: #0000ff;">&lt;/$1&gt;</span>')
+                            .replace(/<(\w+)/g, '<span class="keyword">&lt;$1</span>')
+                            .replace(/<\/(\w+)>/g, '<span class="keyword">&lt;/$1&gt;</span>')
                             // 属性
-                            .replace(/(\w+)\s*=/g, '<span style="color: #000000;">$1</span>=')
+                            .replace(/(\w+)\s*=/g, '<span class="function">$1</span>=')
                             // 属性值
-                            .replace(/=(['"])(?:\\.|[^\\])*?\1/g, '=<span style="color: #008000;">$&</span>')
+                            .replace(/=(['"])(?:\\.|[^\\])*?\1/g, '=<span class="string">$&</span>')
                             // 注释
-                            .replace(/&lt;!--[\s\S]*?--&gt;/g, '<span style="color: #808080; font-style: italic;">$&</span>');
+                            .replace(/<!--[\s\S]*?-->/g, '<span class="comment">$&</span>');
                     } else if (lang === 'css') {
-                        code = code
+                        return code
                             // 选择器
-                            .replace(/([.#]?[\w-]+)\s*\{/g, '<span style="color: #0000ff;">$1</span>{')
+                            .replace(/([.#]?[\w-]+)\s*\{/g, '<span class="keyword">$1</span>{')
                             // 属性
-                            .replace(/(\w+)\s*:/g, '<span style="color: #000000;">$1</span>:')
+                            .replace(/(\w+)\s*:/g, '<span class="function">$1</span>:')
                             // 值
-                            .replace(/:\s*([^;]+);/g, ': <span style="color: #008000;">$1</span>;')
+                            .replace(/:\s*([^;]+);/g, ': <span class="string">$1</span>;')
                             // 注释
-                            .replace(/\/\*[\s\S]*?\*\//g, '<span style="color: #808080; font-style: italic;">$&</span>');
+                            .replace(/\/\*[\s\S]*?\*\//g, '<span class="comment">$&</span>');
                     }
                     
                     return code;
