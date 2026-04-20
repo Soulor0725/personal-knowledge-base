@@ -123,11 +123,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-@app.route('/')
-def index():
-    """返回首页"""
-    return send_from_directory('static', 'index.html')
-
 @app.route('/api/test', methods=['GET'])
 def test():
     """测试路由"""
@@ -188,6 +183,11 @@ def login():
     # 检查 user 中是否有 'name' 列
     name = user['name'] if 'name' in user.keys() else ''
     return jsonify({'id': user['id'], 'username': user['username'], 'name': name, 'token': token, 'message': '登录成功'})
+
+@app.route('/')
+def index():
+    """返回首页"""
+    return send_from_directory('static', 'index.html')
 
 @app.route('/api/auth/me', methods=['GET', 'PUT'])
 @login_required
