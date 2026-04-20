@@ -3469,9 +3469,17 @@
                             
                             for (let i = 0; i < parts.length; i++) {
                                 if (i % 2 === 0) {
-                                    // 普通文本
+                                    // 普通文本，解析 Markdown 链接
+                                    let text = parts[i];
+                                    
+                                    // 解析 Markdown 链接：[链接文本](链接地址)
+                                    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline;">$1</a>');
+                                    
+                                    // 处理换行
+                                    text = text.replace(/\n/g, '<br>');
+                                    
                                     const textNode = document.createElement('div');
-                                    textNode.innerHTML = parts[i].replace(/\n/g, '<br>');
+                                    textNode.innerHTML = text;
                                     articleContent.appendChild(textNode);
                                 } else {
                                     // 代码块
