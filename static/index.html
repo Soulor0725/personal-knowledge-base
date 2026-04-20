@@ -3462,9 +3462,6 @@
                         // 获取文章内容
                         let content = data.content;
                         
-                        // 处理 Markdown 链接
-                        content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline;">$1</a>');
-                        
                         // 处理代码块
                         content = content.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
                             const language = lang || 'plain';
@@ -3476,8 +3473,14 @@
                             </div>`;
                         });
                         
+                        // 处理 Markdown 链接
+                        content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline;">$1</a>');
+                        
                         // 处理换行
                         content = content.replace(/\n/g, '<br>');
+                        
+                        // 确保链接可以点击
+                        content = content.replace(/<a href="([^"]+)" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline;">([^<]+)<\/a>/g, '<a href="$1" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline; cursor: pointer; z-index: 10;">$2</a>');
                         
                         // 设置内容
                         articleContent.innerHTML = content;
