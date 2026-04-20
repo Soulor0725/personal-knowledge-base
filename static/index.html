@@ -3486,10 +3486,40 @@
                             
                             articleContent.innerHTML = result;
                             
-                            // 尝试使用 highlight.js 进行语法高亮
+                            // 确保 highlight.js 加载完成后再执行高亮
                             if (typeof hljs !== 'undefined') {
+                                // 等待 DOM 更新完成
+                                setTimeout(() => {
+                                    document.querySelectorAll('pre code').forEach((block) => {
+                                        hljs.highlightElement(block);
+                                    });
+                                }, 100);
+                            } else {
+                                // 如果 highlight.js 不可用，使用简单的语法高亮
                                 document.querySelectorAll('pre code').forEach((block) => {
-                                    hljs.highlightElement(block);
+                                    const code = block.textContent;
+                                    const lang = block.className.replace('language-', '');
+                                    
+                                    let highlightedCode = code;
+                                    if (lang === 'python') {
+                                        highlightedCode = code
+                                            // 关键字
+                                            .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span style="color: #0000ff;">$1</span>')
+                                            // 字符串
+                                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
+                                            // 注释
+                                            .replace(/#.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
+                                            // 数字
+                                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
+                                            // 函数名
+                                            .replace(/\bdef\s+(\w+)/g, 'def <span style="color: #000000;">$1</span>')
+                                            // 类名
+                                            .replace(/\bclass\s+(\w+)/g, 'class <span style="color: #000000;">$1</span>')
+                                            // 运算符
+                                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
+                                    }
+                                    
+                                    block.innerHTML = highlightedCode;
                                 });
                             }
                         } else {
