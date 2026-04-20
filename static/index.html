@@ -3467,27 +3467,33 @@
                             // 清空 articleContent
                             articleContent.innerHTML = '';
                             
-                            for (let i = 0; i < parts.length; i++) {
-                                if (i % 2 === 0) {
-                                    // 普通文本，解析 Markdown 链接
-                                    let text = parts[i];
+                            // 处理整个内容
+                            let fullContent = data.content;
+                            
+                            // 先处理代码块，将代码块替换为占位符
+                            let codeBlocks = [];
+                            let contentWithPlaceholders = fullContent.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
+                                const index = codeBlocks.length;
+                                codeBlocks.push({ lang: lang || 'plain', code: code });
+                                return `<span data-code-block="${index}"></span>`;
+                            });
+                            
+                            // 解析 Markdown 链接
+                            contentWithPlaceholders = contentWithPlaceholders.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline;">$1</a>');
+                            
+                            // 处理换行
+                            contentWithPlaceholders = contentWithPlaceholders.replace(/\n/g, '<br>');
+                            
+                            // 先设置非代码块内容
+                            articleContent.innerHTML = contentWithPlaceholders;
+                            
+                            // 处理代码块
+                            const codePlaceholders = articleContent.querySelectorAll('span[data-code-block]');
+                            codePlaceholders.forEach((placeholder, index) => {
+                                if (codeBlocks[index]) {
+                                    const { lang, code } = codeBlocks[index];
                                     
-                                    // 解析 Markdown 链接：[链接文本](链接地址)
-                                    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline;">$1</a>');
-                                    
-                                    // 处理换行
-                                    text = text.replace(/\n/g, '<br>');
-                                    
-                                    const textNode = document.createElement('div');
-                                    textNode.innerHTML = text;
-                                    articleContent.appendChild(textNode);
-                                } else {
-                                    // 代码块
-                                    const codeParts = parts[i].split('\n');
-                                    const lang = codeParts[0] ? codeParts[0].trim() : 'plain';
-                                    const code = codeParts.slice(1).join('\n');
-                                    
-                                    // 直接显示代码，使用 textContent 避免 HTML 转义
+                                    // 创建代码块元素
                                     const codeContainer = document.createElement('div');
                                     codeContainer.className = 'code-block-container';
                                     
@@ -3506,9 +3512,10 @@
                                     pre.appendChild(codeElement);
                                     codeContainer.appendChild(pre);
                                     
-                                    articleContent.appendChild(codeContainer);
+                                    // 替换占位符
+                                    placeholder.replaceWith(codeContainer);
                                 }
-                            }
+                            });
                             
                             // 确保 highlight.js 加载完成后再执行高亮
                             if (typeof hljs !== 'undefined') {
