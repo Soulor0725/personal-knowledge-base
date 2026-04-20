@@ -3386,15 +3386,40 @@
                     const articleContent = articleList.querySelector('.article-content');
                     // 使用简单的 Markdown 解析函数
                     function simpleMarkdownParser(text) {
-                        // 处理代码块 - 更健壮的正则表达式
-                        text = text.replace(/^```(\w+)?\s*\n([\s\S]*?)^```/gm, function(match, lang, code) {
-                            return `<pre><code class="language-${lang || 'plain'}">${code}</code></pre>`;
-                        });
-                        // 处理行内代码
-                        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-                        // 处理换行
-                        text = text.replace(/\n/g, '<br>');
-                        return text;
+                        // 处理代码块 - 使用更简单的方法
+                        let result = '';
+                        let inCodeBlock = false;
+                        let codeLang = '';
+                        let codeContent = '';
+                        
+                        const lines = text.split('\n');
+                        
+                        for (let i = 0; i < lines.length; i++) {
+                            const line = lines[i];
+                            
+                            // 检查代码块开始
+                            if (line.startsWith('```')) {
+                                if (inCodeBlock) {
+                                    // 代码块结束
+                                    result += `<pre><code class="language-${codeLang || 'plain'}">${codeContent}</code></pre>`;
+                                    inCodeBlock = false;
+                                    codeLang = '';
+                                    codeContent = '';
+                                } else {
+                                    // 代码块开始
+                                    inCodeBlock = true;
+                                    codeLang = line.substring(3).trim();
+                                }
+                            } else if (inCodeBlock) {
+                                // 代码块内容
+                                codeContent += line + '\n';
+                            } else {
+                                // 普通文本
+                                result += line + '<br>';
+                            }
+                        }
+                        
+                        return result;
                     }
                     
                     // 解析 Markdown 内容
