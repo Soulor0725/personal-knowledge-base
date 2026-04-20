@@ -3247,6 +3247,76 @@
             console.log('=== viewArticle function called ===');
             console.log('Article ID:', id);
             
+            // 配置Marked.js
+            marked.setOptions({
+                breaks: true,
+                gfm: true,
+                highlight: function(code, lang) {
+                    // 简单的语法高亮
+                    if (!lang) return code;
+                    
+                    // 针对不同语言的高亮
+                    if (lang === 'python') {
+                        code = code
+                            // 关键字
+                            .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span style="color: #0000ff;">$1</span>')
+                            // 字符串
+                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
+                            // 注释
+                            .replace(/#.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
+                            // 数字
+                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
+                            // 函数名
+                            .replace(/\bdef\s+(\w+)/g, 'def <span style="color: #000000;">$1</span>')
+                            // 类名
+                            .replace(/\bclass\s+(\w+)/g, 'class <span style="color: #000000;">$1</span>')
+                            // 运算符
+                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
+                    } else if (lang === 'javascript' || lang === 'js') {
+                        code = code
+                            // 关键字
+                            .replace(/\b(var|let|const|function|if|else|for|while|do|switch|case|default|break|continue|return|try|catch|finally|throw|new|this|typeof|instanceof|in|of|from|import|export|async|await)\b/g, '<span style="color: #0000ff;">$1</span>')
+                            // 字符串
+                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
+                            // 注释
+                            .replace(/\/\/.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
+                            .replace(/\/\*[\s\S]*?\*\//g, '<span style="color: #808080; font-style: italic;">$&</span>')
+                            // 数字
+                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
+                            // 函数名
+                            .replace(/\bfunction\s+(\w+)/g, 'function <span style="color: #000000;">$1</span>')
+                            // 方法调用
+                            .replace(/(\w+)\s*\(/g, '<span style="color: #000000;">$1</span>(')
+                            // 运算符
+                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
+                    } else if (lang === 'html') {
+                        code = code
+                            // 标签
+                            .replace(/<(\w+)/g, '<span style="color: #0000ff;">&lt;$1</span>')
+                            .replace(/<\/(\w+)>/g, '<span style="color: #0000ff;">&lt;/$1&gt;</span>')
+                            // 属性
+                            .replace(/(\w+)\s*=/g, '<span style="color: #000000;">$1</span>=')
+                            // 属性值
+                            .replace(/=(['"])(?:\\.|[^\\])*?\1/g, '=<span style="color: #008000;">$&</span>')
+                            // 注释
+                            .replace(/<!--[\s\S]*?-->/g, '<span style="color: #808080; font-style: italic;">$&</span>');
+                    } else if (lang === 'css') {
+                        code = code
+                            // 选择器
+                            .replace(/([.#]?[\w-]+)\s*\{/g, '<span style="color: #0000ff;">$1</span>{')
+                            // 属性
+                            .replace(/(\w+)\s*:/g, '<span style="color: #000000;">$1</span>:')
+                            // 值
+                            .replace(/:\s*([^;]+);/g, ': <span style="color: #008000;">$1</span>;')
+                            // 注释
+                            .replace(/\/\*[\s\S]*?\*\//g, '<span style="color: #808080; font-style: italic;">$&</span>');
+                    }
+                    
+                    return code;
+                },
+                langPrefix: 'language-'
+            });
+            
             const articleList = document.getElementById('articleList');
             if (!articleList) {
                 console.error('articleList not found');
