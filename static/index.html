@@ -3386,40 +3386,22 @@
                     const articleContent = articleList.querySelector('.article-content');
                     // 使用简单的 Markdown 解析函数
                     function simpleMarkdownParser(text) {
-                        // 处理代码块 - 使用更简单的方法
-                        let result = '';
-                        let inCodeBlock = false;
-                        let codeLang = '';
-                        let codeContent = '';
-                        
-                        const lines = text.split('\n');
-                        
-                        for (let i = 0; i < lines.length; i++) {
-                            const line = lines[i];
-                            
-                            // 检查代码块开始
-                            if (line.startsWith('```')) {
-                                if (inCodeBlock) {
-                                    // 代码块结束
-                                    result += `<pre><code class="language-${codeLang || 'plain'}">${codeContent}</code></pre>`;
-                                    inCodeBlock = false;
-                                    codeLang = '';
-                                    codeContent = '';
-                                } else {
-                                    // 代码块开始
-                                    inCodeBlock = true;
-                                    codeLang = line.substring(3).trim();
-                                }
-                            } else if (inCodeBlock) {
-                                // 代码块内容
-                                codeContent += line + '\n';
-                            } else {
-                                // 普通文本
-                                result += line + '<br>';
+                        // 简单处理代码块
+                        text = text.replace(/```(\w+)?[\s\S]*?```/g, function(match) {
+                            // 提取语言和代码内容
+                            const matchParts = match.match(/```(\w+)?\n([\s\S]*?)```/);
+                            if (matchParts) {
+                                const lang = matchParts[1] || 'plain';
+                                const code = matchParts[2] || '';
+                                return `<pre><code class="language-${lang}">${code}</code></pre>`;
                             }
-                        }
+                            return match;
+                        });
                         
-                        return result;
+                        // 处理换行
+                        text = text.replace(/\n/g, '<br>');
+                        
+                        return text;
                     }
                     
                     // 解析 Markdown 内容
