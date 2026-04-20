@@ -1858,10 +1858,7 @@
             }
         }
 
-        // 关闭模态框
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
+
 
         let currentArticleTitle = null;
 
@@ -2858,7 +2855,14 @@
             }
         }
 
-        function closeModal() { document.getElementById('articleModal').classList.remove('active'); editingId = null; }
+        function closeModal(modalId) { 
+            if (modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            } else {
+                document.getElementById('articleModal').classList.remove('active'); 
+                editingId = null; 
+            }
+        }
 
         async function saveArticle(event) {
             // 移除event.preventDefault()，因为按钮现在是type="button"
