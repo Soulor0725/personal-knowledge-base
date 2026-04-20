@@ -3386,9 +3386,9 @@
                     const articleContent = articleList.querySelector('.article-content');
                     // 使用简单的 Markdown 解析函数
                     function simpleMarkdownParser(text) {
-                        // 处理代码块
-                        text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
-                            return `<pre><code class="language-${lang || 'plain'}">${code.trim()}</code></pre>`;
+                        // 处理代码块 - 更健壮的正则表达式
+                        text = text.replace(/^```(\w+)?\s*\n([\s\S]*?)^```/gm, function(match, lang, code) {
+                            return `<pre><code class="language-${lang || 'plain'}">${code}</code></pre>`;
                         });
                         // 处理行内代码
                         text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
