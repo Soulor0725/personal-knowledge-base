@@ -3456,7 +3456,7 @@
                     
                     // 解析 Markdown 内容
                     try {
-                        // 直接处理代码块，参考 CSDN 和博客园的处理方式
+                        // 直接处理代码块，使用最简单的方法
                         let content = data.content;
                         
                         // 简单处理代码块，使用字符串分割
@@ -3464,27 +3464,43 @@
                             const parts = content.split('```');
                             let result = '';
                             
+                            // 清空 articleContent
+                            articleContent.innerHTML = '';
+                            
                             for (let i = 0; i < parts.length; i++) {
                                 if (i % 2 === 0) {
                                     // 普通文本
-                                    result += parts[i].replace(/\n/g, '<br>');
+                                    const textNode = document.createElement('div');
+                                    textNode.innerHTML = parts[i].replace(/\n/g, '<br>');
+                                    articleContent.appendChild(textNode);
                                 } else {
                                     // 代码块
                                     const codeParts = parts[i].split('\n');
                                     const lang = codeParts[0] ? codeParts[0].trim() : 'plain';
                                     const code = codeParts.slice(1).join('\n');
                                     
-                                    // 直接显示代码，不进行复杂的语法高亮
-                                    result += `<div class="code-block-container">
-                                        <div class="code-block-header">
-                                            <span class="code-language">${lang}</span>
-                                        </div>
-                                        <pre class="code-block"><code class="language-${lang}">${code}</code></pre>
-                                    </div>`;
+                                    // 直接显示代码，使用 textContent 避免 HTML 转义
+                                    const codeContainer = document.createElement('div');
+                                    codeContainer.className = 'code-block-container';
+                                    
+                                    const header = document.createElement('div');
+                                    header.className = 'code-block-header';
+                                    header.innerHTML = `<span class="code-language">${lang}</span>`;
+                                    codeContainer.appendChild(header);
+                                    
+                                    const pre = document.createElement('pre');
+                                    pre.className = 'code-block';
+                                    
+                                    const codeElement = document.createElement('code');
+                                    codeElement.className = `language-${lang}`;
+                                    codeElement.textContent = code; // 使用 textContent 避免 HTML 转义
+                                    
+                                    pre.appendChild(codeElement);
+                                    codeContainer.appendChild(pre);
+                                    
+                                    articleContent.appendChild(codeContainer);
                                 }
                             }
-                            
-                            articleContent.innerHTML = result;
                             
                             // 确保 highlight.js 加载完成后再执行高亮
                             if (typeof hljs !== 'undefined') {
@@ -3494,33 +3510,6 @@
                                         hljs.highlightElement(block);
                                     });
                                 }, 100);
-                            } else {
-                                // 如果 highlight.js 不可用，使用简单的语法高亮
-                                document.querySelectorAll('pre code').forEach((block) => {
-                                    const code = block.textContent;
-                                    const lang = block.className.replace('language-', '');
-                                    
-                                    let highlightedCode = code;
-                                    if (lang === 'python') {
-                                        highlightedCode = code
-                                            // 关键字
-                                            .replace(/\b(def|class|import|from|if|elif|else|for|while|try|except|finally|return|print|pass|break|continue|with|as|lambda|and|or|not|in|is|True|False|None)\b/g, '<span style="color: #0000ff;">$1</span>')
-                                            // 字符串
-                                            .replace(/(['"])(?:\\.|[^\\])*?\1/g, '<span style="color: #008000;">$&</span>')
-                                            // 注释
-                                            .replace(/#.*$/gm, '<span style="color: #808080; font-style: italic;">$&</span>')
-                                            // 数字
-                                            .replace(/\b\d+\b/g, '<span style="color: #ff8c00;">$&</span>')
-                                            // 函数名
-                                            .replace(/\bdef\s+(\w+)/g, 'def <span style="color: #000000;">$1</span>')
-                                            // 类名
-                                            .replace(/\bclass\s+(\w+)/g, 'class <span style="color: #000000;">$1</span>')
-                                            // 运算符
-                                            .replace(/([=+\-*/%&|^!<>=])/g, '<span style="color: #ff8c00;">$1</span>');
-                                    }
-                                    
-                                    block.innerHTML = highlightedCode;
-                                });
                             }
                         } else {
                             // 没有代码块，直接处理换行
