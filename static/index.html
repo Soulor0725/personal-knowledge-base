@@ -3456,79 +3456,40 @@
                     
                     // 解析 Markdown 内容
                     try {
-                        // 直接处理代码块，使用最简单的方法
+                        // 清空 articleContent
+                        articleContent.innerHTML = '';
+                        
+                        // 获取文章内容
                         let content = data.content;
                         
-                        // 简单处理代码块，使用字符串分割
-                        if (content.includes('```')) {
-                            const parts = content.split('```');
-                            let result = '';
-                            
-                            // 清空 articleContent
-                            articleContent.innerHTML = '';
-                            
-                            // 处理整个内容
-                            let fullContent = data.content;
-                            
-                            // 先处理代码块，将代码块替换为占位符
-                            let codeBlocks = [];
-                            let contentWithPlaceholders = fullContent.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
-                                const index = codeBlocks.length;
-                                codeBlocks.push({ lang: lang || 'plain', code: code });
-                                return `<span data-code-block="${index}"></span>`;
-                            });
-                            
-                            // 解析 Markdown 链接
-                            contentWithPlaceholders = contentWithPlaceholders.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline;">$1</a>');
-                            
-                            // 处理换行
-                            contentWithPlaceholders = contentWithPlaceholders.replace(/\n/g, '<br>');
-                            
-                            // 先设置非代码块内容
-                            articleContent.innerHTML = contentWithPlaceholders;
-                            
-                            // 处理代码块
-                            const codePlaceholders = articleContent.querySelectorAll('span[data-code-block]');
-                            codePlaceholders.forEach((placeholder, index) => {
-                                if (codeBlocks[index]) {
-                                    const { lang, code } = codeBlocks[index];
-                                    
-                                    // 创建代码块元素
-                                    const codeContainer = document.createElement('div');
-                                    codeContainer.className = 'code-block-container';
-                                    
-                                    const header = document.createElement('div');
-                                    header.className = 'code-block-header';
-                                    header.innerHTML = `<span class="code-language">${lang}</span>`;
-                                    codeContainer.appendChild(header);
-                                    
-                                    const pre = document.createElement('pre');
-                                    pre.className = 'code-block';
-                                    
-                                    const codeElement = document.createElement('code');
-                                    codeElement.className = `language-${lang}`;
-                                    codeElement.textContent = code; // 使用 textContent 避免 HTML 转义
-                                    
-                                    pre.appendChild(codeElement);
-                                    codeContainer.appendChild(pre);
-                                    
-                                    // 替换占位符
-                                    placeholder.replaceWith(codeContainer);
-                                }
-                            });
-                            
-                            // 确保 highlight.js 加载完成后再执行高亮
-                            if (typeof hljs !== 'undefined') {
-                                // 等待 DOM 更新完成
-                                setTimeout(() => {
-                                    document.querySelectorAll('pre code').forEach((block) => {
-                                        hljs.highlightElement(block);
-                                    });
-                                }, 100);
-                            }
-                        } else {
-                            // 没有代码块，直接处理换行
-                            articleContent.innerHTML = content.replace(/\n/g, '<br>');
+                        // 处理 Markdown 链接
+                        content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline;">$1</a>');
+                        
+                        // 处理代码块
+                        content = content.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
+                            const language = lang || 'plain';
+                            return `<div class="code-block-container">
+                                <div class="code-block-header">
+                                    <span class="code-language">${language}</span>
+                                </div>
+                                <pre class="code-block"><code class="language-${language}">${code}</code></pre>
+                            </div>`;
+                        });
+                        
+                        // 处理换行
+                        content = content.replace(/\n/g, '<br>');
+                        
+                        // 设置内容
+                        articleContent.innerHTML = content;
+                        
+                        // 确保 highlight.js 加载完成后再执行高亮
+                        if (typeof hljs !== 'undefined') {
+                            // 等待 DOM 更新完成
+                            setTimeout(() => {
+                                document.querySelectorAll('pre code').forEach((block) => {
+                                    hljs.highlightElement(block);
+                                });
+                            }, 100);
                         }
                     } catch (error) {
                         console.error('Error parsing markdown:', error);
