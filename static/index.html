@@ -3425,34 +3425,6 @@
                     
                     // 插入解析后的 Markdown 内容
                     const articleContent = articleList.querySelector('.article-content');
-                    // 使用简单的 Markdown 解析函数
-                    function simpleMarkdownParser(text) {
-                        // 直接处理代码块，不使用复杂的正则表达式
-                        if (text.includes('```')) {
-                            // 分割文本，处理代码块
-                            const parts = text.split('```');
-                            let result = '';
-                            
-                            for (let i = 0; i < parts.length; i++) {
-                                if (i % 2 === 0) {
-                                    // 普通文本
-                                    result += parts[i].replace(/\n/g, '<br>');
-                                } else {
-                                    // 代码块
-                                    const codeParts = parts[i].split('\n');
-                                    const lang = codeParts[0].trim() || 'plain';
-                                    const code = codeParts.slice(1).join('\n');
-                                    
-                                    result += `<pre class="code-block"><code class="language-${lang}">${code}</code></pre>`;
-                                }
-                            }
-                            
-                            return result;
-                        } else {
-                            // 没有代码块，直接处理换行
-                            return text.replace(/\n/g, '<br>');
-                        }
-                    }
                     
                     // 解析 Markdown 内容
                     try {
@@ -3462,28 +3434,34 @@
                         // 获取文章内容
                         let content = data.content;
                         
-                        // 处理代码块
-                        content = content.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
-                            const language = lang || 'plain';
-                            return `<div class="code-block-container">
-                                <div class="code-block-header">
-                                    <span class="code-language">${language}</span>
-                                </div>
-                                <pre class="code-block"><code class="language-${language}">${code}</code></pre>
-                            </div>`;
+                        // 先处理代码块，将其替换为占位符
+                        const codeBlocks = [];
+                        let contentWithPlaceholders = content.replace(/```(\w+)?\n([\s\S]*?)\n```/g, function(match, lang, code) {
+                            const index = codeBlocks.length;
+                            codeBlocks.push({ lang: lang || 'plain', code: code });
+                            return `__CODE_BLOCK_${index}__`;
                         });
                         
                         // 处理 Markdown 链接
-                        content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline;">$1</a>');
+                        contentWithPlaceholders = contentWithPlaceholders.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline; cursor: pointer;">$1</a>');
                         
                         // 处理换行
-                        content = content.replace(/\n/g, '<br>');
+                        contentWithPlaceholders = contentWithPlaceholders.replace(/\n/g, '<br>');
                         
-                        // 确保链接可以点击
-                        content = content.replace(/<a href="([^"]+)" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline;">([^<]+)<\/a>/g, '<a href="$1" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline; cursor: pointer; z-index: 10;">$2</a>');
+                        // 替换代码块占位符
+                        for (let i = 0; i < codeBlocks.length; i++) {
+                            const { lang, code } = codeBlocks[i];
+                            const codeHTML = `<div class="code-block-container">
+                                <div class="code-block-header">
+                                    <span class="code-language">${lang}</span>
+                                </div>
+                                <pre class="code-block"><code class="language-${lang}">${code}</code></pre>
+                            </div>`;
+                            contentWithPlaceholders = contentWithPlaceholders.replace(`__CODE_BLOCK_${i}__`, codeHTML);
+                        }
                         
                         // 设置内容
-                        articleContent.innerHTML = content;
+                        articleContent.innerHTML = contentWithPlaceholders;
                         
                         // 确保 highlight.js 加载完成后再执行高亮
                         if (typeof hljs !== 'undefined') {
