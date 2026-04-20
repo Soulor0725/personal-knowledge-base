@@ -3282,6 +3282,7 @@
             marked.setOptions({
                 breaks: true,
                 gfm: true,
+                sanitize: false, // 允许HTML标签，用于代码高亮
                 highlight: function(code, lang) {
                     // 简单的语法高亮
                     if (!lang) return code;
