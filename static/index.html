@@ -3365,7 +3365,7 @@
                                     <button class="btn btn-secondary" onclick="navigateArticle(${data.id}, 'next')">下一篇 <i class="fa fa-arrow-right"></i></button>
                                 </div>
                             </div>
-                            <div class="article-content" style="color:#cbd5e1;line-height:1.9;margin-bottom:36px;">
+                            <div class="article-content" style="color:#cbd5e1;line-height:1.9;margin-bottom:36px;max-height:600px;overflow-y:auto;">
                                 <!-- 内容将通过 JavaScript 插入 -->
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:24px;">
@@ -3387,15 +3387,8 @@
                     // 使用简单的 Markdown 解析函数
                     function simpleMarkdownParser(text) {
                         // 简单处理代码块
-                        text = text.replace(/```(\w+)?[\s\S]*?```/g, function(match) {
-                            // 提取语言和代码内容
-                            const matchParts = match.match(/```(\w+)?\n([\s\S]*?)```/);
-                            if (matchParts) {
-                                const lang = matchParts[1] || 'plain';
-                                const code = matchParts[2] || '';
-                                return `<pre><code class="language-${lang}">${code}</code></pre>`;
-                            }
-                            return match;
+                        text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
+                            return `<pre><code class="language-${lang || 'plain'}">${code || ''}</code></pre>`;
                         });
                         
                         // 处理换行
