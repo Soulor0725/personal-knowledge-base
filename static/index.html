@@ -3446,6 +3446,12 @@
                             return `__CODE_BLOCK_${index}__`;
                         });
                         
+                        // 处理 Markdown 标题
+                        contentWithPlaceholders = contentWithPlaceholders.replace(/^(#{1,6})\s+(.+)$/gm, function(match, hashes, text) {
+                            const level = hashes.length;
+                            return `<h${level} style="color: #f8fafc; margin-top: 24px; margin-bottom: 12px;">${text}</h${level}>`;
+                        });
+                        
                         // 处理 Markdown 链接
                         contentWithPlaceholders = contentWithPlaceholders.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #3b82f6; text-decoration: underline; display: inline; cursor: pointer; position: relative; z-index: 100;">$1</a>');
                         
