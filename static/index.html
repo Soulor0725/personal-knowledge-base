@@ -3325,21 +3325,10 @@
             }
             
             function renderArticle(id) {
-                // 配置Marked.js，使用 highlight.js 实现代码高亮
+                // 简化 Marked.js 配置，先确保 Markdown 格式能正确解析
                 marked.setOptions({
                     breaks: true,
-                    gfm: true,
-                    highlight: function(code, lang) {
-                        if (lang && hljs.getLanguage(lang)) {
-                            try {
-                                return hljs.highlight(code, { language: lang }).value;
-                            } catch (err) {
-                                console.error('Highlight error:', err);
-                            }
-                        }
-                        return hljs.highlightAuto(code).value;
-                    },
-                    langPrefix: 'hljs language-'
+                    gfm: true
                 });
             
             const articleList = document.getElementById('articleList');
@@ -3395,22 +3384,28 @@
                     
                     // 插入解析后的 Markdown 内容
                     const articleContent = articleList.querySelector('.article-content');
-                    // 尝试使用与其他地方相同的方式调用 marked
+                    // 使用简单的 Markdown 解析函数
+                    function simpleMarkdownParser(text) {
+                        // 处理代码块
+                        text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
+                            return `<pre><code class="language-${lang || 'plain'}">${code.trim()}</code></pre>`;
+                        });
+                        // 处理行内代码
+                        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+                        // 处理换行
+                        text = text.replace(/\n/g, '<br>');
+                        return text;
+                    }
+                    
+                    // 解析 Markdown 内容
                     try {
-                        // 先检查 marked 对象的结构
-                        console.log('Marked object:', marked);
-                        console.log('Marked methods:', Object.keys(marked));
+                        articleContent.innerHTML = simpleMarkdownParser(data.content);
                         
-                        // 尝试使用不同的调用方式
-                        if (typeof marked === 'function') {
-                            // 直接调用 marked 函数
-                            articleContent.innerHTML = marked(data.content);
-                        } else if (marked.parse) {
-                            // 使用 marked.parse 方法
-                            articleContent.innerHTML = marked.parse(data.content);
-                        } else {
-                            // 回退到原始内容
-                            articleContent.textContent = data.content;
+                        // 尝试使用 highlight.js 高亮代码
+                        if (typeof hljs !== 'undefined') {
+                            document.querySelectorAll('pre code').forEach((block) => {
+                                hljs.highlightElement(block);
+                            });
                         }
                     } catch (error) {
                         console.error('Error parsing markdown:', error);
