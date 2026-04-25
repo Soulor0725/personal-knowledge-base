@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人知识库</title>
+    <title>智慧管理中心</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
@@ -54,56 +54,58 @@
         }
         
         /* 关键字 */
-        .CodeMirror .cm-keyword {
+        .CodeMirror .cm-keyword, .CodeMirror span.cm-keyword {
             color: #f472b6 !important;
             font-weight: 600 !important;
         }
         
         /* 字符串 */
-        .CodeMirror .cm-string {
+        .CodeMirror .cm-string, .CodeMirror span.cm-string {
             color: #fbbf24 !important;
         }
         
         /* 注释 */
-        .CodeMirror .cm-comment {
+        .CodeMirror .cm-comment, .CodeMirror span.cm-comment {
             color: #64748b !important;
             font-style: italic !important;
         }
         
         /* 数字 */
-        .CodeMirror .cm-number {
+        .CodeMirror .cm-number, .CodeMirror span.cm-number {
             color: #34d399 !important;
         }
         
         /* 函数名 */
-        .CodeMirror .cm-def {
+        .CodeMirror .cm-def, .CodeMirror span.cm-def, .CodeMirror span.cm-function {
             color: #60a5fa !important;
         }
         
         /* 变量 */
-        .CodeMirror .cm-variable {
+        .CodeMirror .cm-variable, .CodeMirror span.cm-variable {
             color: #e2e8f0 !important;
         }
         
         /* 操作符 */
-        .CodeMirror .cm-operator {
+        .CodeMirror .cm-operator, .CodeMirror span.cm-operator {
             color: #cbd5e1 !important;
         }
         
         /* 括号 */
-        .CodeMirror .cm-punctuation {
+        .CodeMirror .cm-punctuation, .CodeMirror span.cm-punctuation {
             color: #94a3b8 !important;
         }
         
-        /* Python 特定 */
-        .CodeMirror .cm-property {
+        /* 属性 */
+        .CodeMirror .cm-property, .CodeMirror span.cm-property {
             color: #60a5fa !important;
         }
         
-        /* JavaScript 特定 */
-        .CodeMirror .cm-atom {
+        /* Python特定 */
+        .CodeMirror .cm-atom, .CodeMirror span.cm-atom {
             color: #34d399 !important;
         }
+        
+
         
         /* 行号 */
         .CodeMirror .CodeMirror-gutters {
@@ -290,41 +292,41 @@
         
         /* 代码块样式 */
         
-        /* 代码语法高亮 - 参照博客园样式 */
-        .CodeMirror span.cm-keyword {
+        /* 代码语法高亮 - 参照博客园样式（仅用于预览） */
+        .editor-preview .CodeMirror span.cm-keyword {
             color: #0000ff !important; /* 关键字 - 蓝色 */
         }
         
-        .CodeMirror span.cm-string {
+        .editor-preview .CodeMirror span.cm-string {
             color: #008000 !important; /* 字符串 - 绿色 */
         }
         
-        .CodeMirror span.cm-comment {
+        .editor-preview .CodeMirror span.cm-comment {
             color: #808080 !important; /* 注释 - 灰色 */
             font-style: italic !important;
         }
         
-        .CodeMirror span.cm-number {
+        .editor-preview .CodeMirror span.cm-number {
             color: #ff8c00 !important; /* 数字 - 橙色 */
         }
         
-        .CodeMirror span.cm-variable {
+        .editor-preview .CodeMirror span.cm-variable {
             color: #000000 !important; /* 变量 - 黑色 */
         }
         
-        .CodeMirror span.cm-function {
+        .editor-preview .CodeMirror span.cm-function {
             color: #000000 !important; /* 函数 - 黑色 */
         }
         
-        .CodeMirror span.cm-operator {
+        .editor-preview .CodeMirror span.cm-operator {
             color: #ff8c00 !important; /* 运算符 - 橙色 */
         }
         
-        .CodeMirror span.cm-property {
+        .editor-preview .CodeMirror span.cm-property {
             color: #000000 !important; /* 属性 - 黑色 */
         }
         
-        .CodeMirror span.cm-punctuation {
+        .editor-preview .CodeMirror span.cm-punctuation {
             color: #000000 !important; /* 标点 - 黑色 */
         }
         
@@ -508,6 +510,7 @@
             background: rgba(30, 41, 59, 0.8);
             border: 1px solid rgba(148, 163, 184, 0.1);
             position: relative; /* 添加相对定位 */
+            overflow: visible;
         }
         .category-item:hover {
             background: rgba(30, 41, 59, 1);
@@ -683,6 +686,16 @@
             border-color: rgba(96, 165, 250, 0.3);
             color: #60a5fa;
         }
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+        }
         .btn-outline {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(148, 163, 184, 0.1);
@@ -799,19 +812,15 @@
             text-align: center;
         }
         .article-views-count {
-            flex: 1;
             font-size: 12px;
             color: #94a3b8;
             display: flex;
             align-items: center;
             gap: 4px;
-            justify-content: flex-end;
         }
         .article-actions {
-            flex: 1;
             display: flex;
             gap: 8px;
-            justify-content: flex-end;
         }
         .action-btn {
             background: rgba(75, 85, 99, 0.5);
@@ -898,6 +907,57 @@
         
         #articleList .number {
             color: #ff8c00 !important; /* 数字 - 橙色 */
+        }
+        
+        /* Markdown内容样式调整 */
+        #articleList h1,
+        #articleList h2,
+        #articleList h3,
+        #articleList h4,
+        #articleList h5,
+        #articleList h6 {
+            margin-top: 0.5em;
+            margin-bottom: 0.3em;
+            line-height: 1.2;
+        }
+        
+        #articleList p {
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+            line-height: 1.4;
+        }
+        
+        #articleList ul,
+        #articleList ol {
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+            padding-left: 1.5em;
+        }
+        
+        #articleList li {
+            margin-top: 0.1em;
+            margin-bottom: 0.1em;
+        }
+        
+        #articleList blockquote {
+            margin-top: 0.3em;
+            margin-bottom: 0.3em;
+            padding-left: 1em;
+            border-left: 3px solid rgba(96, 165, 250, 0.5);
+        }
+        
+        /* 移除Markdown默认的段落间距 */
+        #articleList p + p {
+            margin-top: 0.3em;
+        }
+        
+        #articleList h1 + p,
+        #articleList h2 + p,
+        #articleList h3 + p,
+        #articleList h4 + p,
+        #articleList h5 + p,
+        #articleList h6 + p {
+            margin-top: 0.3em;
         }
         
         #articleList .function {
@@ -1259,7 +1319,7 @@
 </head>
 <body>
     <header class="header">
-        <h1>📚 个人知识库</h1>
+        <h1>💡 智慧管理中心</h1>
         <div class="stats-bar">
             <div class="stat-item">文章 <span id="statArticles">0</span></div>
             <div class="stat-item">收藏 <span id="statFavorites">0</span></div>
@@ -1277,8 +1337,22 @@
                 <div id="categoryList"></div>
             </div>
             <div class="sidebar-section">
-                <h3>标签 <button class="add-btn" onclick="openTagModal()" title="添加标签">+</button></h3>
-                <div class="tag-cloud" id="tagCloud"></div>
+                <h3 style="text-align: center; display: block;"><i class="fa fa-lemon-o" style="color: #7CFC00; margin-right: 8px;"></i> 2026猕猴桃销售</h3>
+                <div class="category-item" onclick="showKiwiSales()">
+                    <div class="category-left">
+                        <div class="category-dot" style="background:#22c55e;"></div>
+                        <span class="category-name">销售订单</span>
+                    </div>
+                    <div class="category-actions">
+                        <span class="category-count" id="kiwiSalesCount">0</span>
+                    </div>
+                </div>
+                <div class="category-item" onclick="showKiwiReportPage()">
+                    <div class="category-left">
+                        <div class="category-dot" style="background:#3b82f6;"></div>
+                        <span class="category-name">销售报表</span>
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -1291,7 +1365,8 @@
                     </button>
                 </div>
                 <button class="btn btn-secondary" onclick="showAll()">全部</button>
-                <button class="btn btn-primary" onclick="openModal()">+ 新建</button>
+                <button class="btn btn-danger" onclick="deleteSelectedArticles()" style="display: none;" id="deleteSelectedBtn">删除选中</button>
+                <button class="btn btn-secondary" onclick="openModal()">+ 新增</button>
             </div>
             <div id="articleList"></div>
         </main>
@@ -1373,10 +1448,70 @@
         </div>
     </div>
 
+    <!-- 猕猴桃销售模态框 -->
+    <div id="kiwiSalesModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2 id="kiwiSalesModalTitle">新增订单</h2>
+                <button class="close-btn" onclick="closeKiwiSalesModal()">✕</button>
+            </div>
+            <form id="kiwiSalesForm" onsubmit="saveKiwiSale(event)">
+                <input type="hidden" id="kiwiSaleId">
+                <div class="form-group">
+                    <label>客户名 *</label>
+                    <input type="text" id="kiwiCustomerName" required placeholder="请输入客户名">
+                </div>
+                <div class="form-group">
+                    <label>电话 *</label>
+                    <input type="text" id="kiwiPhone" required placeholder="请输入电话号码">
+                </div>
+                <div class="form-group">
+                    <label>地址 *</label>
+                    <input type="text" id="kiwiAddress" required placeholder="请输入收货地址">
+                </div>
+                <div class="form-group">
+                    <label>接单日期 *</label>
+                    <input type="date" id="kiwiOrderDate" required>
+                </div>
+                <div class="form-group">
+                    <label>状态</label>
+                    <select id="kiwiStatus">
+                        <option value="未发货">未发货</option>
+                        <option value="已发货">已发货</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>运单号</label>
+                    <input type="text" id="kiwiTrackingNumber" placeholder="请输入运单号">
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <select id="kiwiRemark">
+                        <option value="">请选择</option>
+                        <option value="5斤装">5斤装</option>
+                        <option value="10斤装">10斤装</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>数量</label>
+                    <input type="number" id="kiwiQuantity" placeholder="请输入数量" min="0" step="1">
+                </div>
+                <div class="form-group">
+                    <label>支付金额</label>
+                    <input type="number" id="kiwiPaymentAmount" placeholder="请输入支付金额" min="0" step="0.01">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeKiwiSalesModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="articleModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">新建文章</h2>
+                <h2 id="modalTitle">新增文章</h2>
                 <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
             <form id="articleForm" onsubmit="saveArticle(event)">
@@ -1440,117 +1575,7 @@
         </div>
     </div>
 
-    <div id="tagModal" class="modal">
-        <div class="modal-content" style="max-width: 420px;">
-            <div class="modal-header">
-                <h2>标签</h2>
-                <button class="close-btn" onclick="closeTagModal()">✕</button>
-            </div>
-            <div style="background: rgba(96, 165, 250, 0.1); padding: 16px; border-radius: 14px; margin-bottom: 24px; border: 1px solid rgba(96, 165, 250, 0.2);">
-                <p style="color: #94a3b8; font-size: 14px; margin: 0; line-height: 1.7;">
-                    <strong style="color: #60a5fa;">💡 提示：</strong>标签在创建文章时添加。在文章标签输入框中输入多个标签，用逗号分隔即可。
-                </p>
-            </div>
-            <div>
-                <h4 style="margin-bottom: 14px; color: #cbd5e1; font-size: 15px;">已有标签</h4>
-                <div id="tagListModal" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-            <div class="form-actions" style="margin-top: 28px;">
-                <button type="button" class="btn btn-secondary" onclick="closeTagModal()">关闭</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- 文章右键菜单 -->
-    <div id="articleContextMenu" class="context-menu" style="
-        display: none;
-        position: fixed;
-        background: rgba(30, 41, 59, 0.95);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 8px;
-        padding: 8px 0;
-        z-index: 10000;
-        min-width: 180px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    ">
-        <div class="context-menu-item" onclick="renameArticle()" style="
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        ">
-            <i class="fa fa-pencil" style="font-size: 12px; color: #60a5fa;"></i>
-            <span>重命名</span>
-        </div>
-        <div class="context-menu-item" onclick="editArticle(currentArticleId)" style="
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        ">
-            <i class="fa fa-edit" style="font-size: 12px; color: #60a5fa;"></i>
-            <span>编辑文档</span>
-        </div>
-        <div class="context-menu-item" onclick="openArticleInNewTab()" style="
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        ">
-            <i class="fa fa-external-link" style="font-size: 12px; color: #60a5fa;"></i>
-            <span>在新标签页打开</span>
-        </div>
-        <div class="context-menu-divider" style="
-            height: 1px;
-            background: rgba(148, 163, 184, 0.2);
-            margin: 4px 0;
-        "></div>
-        <div class="context-menu-item" onclick="exportArticle()" style="
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        ">
-            <i class="fa fa-download" style="font-size: 12px; color: #60a5fa;"></i>
-            <span>导出...</span>
-        </div>
-        <div class="context-menu-divider" style="
-            height: 1px;
-            background: rgba(148, 163, 184, 0.2);
-            margin: 4px 0;
-        "></div>
-        <div class="context-menu-item" onclick="toggleFavoriteArticle()" style="
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        ">
-            <i class="fa fa-star" style="font-size: 12px; color: #fbbf24;"></i>
-            <span id="favoriteMenuItem">置顶文档</span>
-        </div>
-        <div class="context-menu-item" onclick="deleteArticleFromMenu()" style="
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #ef4444;
-        ">
-            <i class="fa fa-trash" style="font-size: 12px; color: #ef4444;"></i>
-            <span>删除</span>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/markdown/markdown.min.js"></script>
@@ -1575,8 +1600,12 @@
         let currentTag = null;
         let editingId = null;
         let easyMDE = null;
-        let currentArticleId = null;
+
         let user = null; // 当前登录用户
+        let currentPage = 1;
+        let pageSize = 10;
+        let totalArticles = 0;
+        let currentView = 'all'; // all, favorites
 
         // 检查用户登录状态
         function checkAuth() {
@@ -1600,7 +1629,6 @@
                     `;
                     loadArticles();
                     loadCategories();
-                    loadTags();
                     loadStats();
                 } catch (error) {
                     console.error('解析用户数据失败:', error);
@@ -1860,7 +1888,7 @@
 
 
 
-        let currentArticleTitle = null;
+
 
         // 获取认证头
         function getAuthHeaders() {
@@ -1877,8 +1905,110 @@
             alert('登录状态已清除');
         }
 
+        // 加载猕猴桃销售订单数量
+        async function loadKiwiSalesCount() {
+            try {
+                const response = await fetch(`${API_URL}/kiwi-sales?page=1&page_size=1`, {
+                    headers: getAuthHeaders()
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // 未授权，重新检查认证状态
+                        checkAuth();
+                    }
+                    return;
+                }
+                
+                const data = await response.json();
+                if (data && data.total !== undefined) {
+                    document.getElementById('kiwiSalesCount').textContent = data.total;
+                }
+            } catch (error) {
+                console.error('加载猕猴桃销售订单数量失败:', error);
+            }
+        }
+
+        // 导出猕猴桃销售订单到Excel（CSV格式）
+        async function exportKiwiSalesToExcel() {
+            try {
+                // 显示加载状态
+                const originalText = document.querySelector('button[onclick="exportKiwiSalesToExcel()"]').textContent;
+                document.querySelector('button[onclick="exportKiwiSalesToExcel()"]').textContent = '导出中...';
+                
+                // 获取所有订单数据（不分页）
+                const response = await fetch(`${API_URL}/kiwi-sales?page=1&page_size=1000`, {
+                    headers: getAuthHeaders()
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        checkAuth();
+                    }
+                    throw new Error('获取数据失败');
+                }
+                
+                const data = await response.json();
+                const sales = data.sales || [];
+                
+                if (sales.length === 0) {
+                    alert('没有订单数据可导出');
+                    document.querySelector('button[onclick="exportKiwiSalesToExcel()"]').textContent = originalText;
+                    return;
+                }
+                
+                // 生成CSV内容
+                let csvContent = "序号,客户名,电话,地址,接单日期,状态,运单号,备注,数量,支付金额\n";
+                
+                // 调试：打印第一条记录的结构
+                if (sales.length > 0) {
+                    console.log('API返回的销售数据结构:', sales[0]);
+                }
+                
+                sales.forEach((sale, index) => {
+                    const orderDate = sale.order_date ? new Date(sale.order_date).toLocaleDateString('zh-CN') : '';
+                    const status = sale.status || '未发货';
+                    
+                    // 确保电话号码以文本格式导出，避免Excel自动转换为科学计数法
+                    const phoneText = `"'${sale.phone}'"`;
+                    
+                    csvContent += `${index + 1},"${sale.customer_name}",${phoneText},"${sale.address}","${orderDate}","${status}","${sale.tracking_number || ''}","${sale.remark || ''}","${sale.quantity || 0}","${(sale.payment_amount || 0).toFixed(2)}"\n`;
+                });
+                
+                // 创建下载链接
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `猕猴桃销售订单_${new Date().toISOString().slice(0, 10)}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // 恢复按钮文本
+                document.querySelector('button[onclick="exportKiwiSalesToExcel()"]').textContent = originalText;
+                
+                // 清除选中状态
+                const selectAll = document.getElementById('selectAllKiwiSales');
+                if (selectAll) selectAll.checked = false;
+                const checkboxes = document.querySelectorAll('.kiwi-sales-checkbox');
+                checkboxes.forEach(cb => cb.checked = false);
+                updateKiwiSalesDeleteButton();
+                
+                alert('导出成功！');
+            } catch (error) {
+                console.error('导出失败:', error);
+                document.querySelector('button[onclick="exportKiwiSalesToExcel()"]').textContent = '导出Excel';
+                alert('导出失败，请重试');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             checkAuth();
+            
+            // 加载猕猴桃销售订单数量
+            loadKiwiSalesCount();
             
             // 点击页面其他地方关闭右键菜单
             document.addEventListener('click', closeArticleContextMenu);
@@ -1896,11 +2026,23 @@
         });
 
         async function loadArticles() {
+            console.log('=== 加载文章开始 ===');
+            console.log('当前分类:', currentCategory);
+            console.log('当前标签:', currentTag);
+            console.log('当前视图:', currentView);
+            console.log('当前页码:', currentPage);
+            console.log('每页大小:', pageSize);
+            
             let url = `${API_URL}/articles`;
             const params = [];
             if (currentCategory) params.push(`category=${encodeURIComponent(currentCategory)}`);
             if (currentTag) params.push(`tag=${encodeURIComponent(currentTag)}`);
+            if (currentView === 'favorites') params.push('favorite=true');
+            params.push(`page=${currentPage}`);
+            params.push(`page_size=${pageSize}`);
             if (params.length) url += '?' + params.join('&');
+            
+            console.log('请求URL:', url);
             try {
                 const response = await fetch(url, {
                     headers: getAuthHeaders()
@@ -1917,48 +2059,227 @@
                     throw new Error('加载文章失败');
                 }
                 
-                const articles = await response.json();
+                const result = await response.json();
+                console.log('API响应:', result);
+                if (!result || !Array.isArray(result.articles)) {
+                    throw new Error('API响应格式错误');
+                }
+                const articles = result.articles;
+                totalArticles = result.total || 0;
                 renderArticles(articles);
             } catch (error) {
                 console.error('加载文章失败:', error);
+                console.error('错误详情:', error.message);
                 // 避免无限循环，不在这里调用checkAuth()
+                // 显示错误信息
+                const articleList = document.getElementById('articleList');
+                articleList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>加载失败</h3>
+                        <p>${error.message}</p>
+                        <button class="btn btn-secondary" onclick="loadArticles()" style="margin-top: 16px;">重试</button>
+                    </div>
+                `;
             }
         }
 
         function renderArticles(articles) {
             const articleList = document.getElementById('articleList');
             if (articles.length === 0) {
-                articleList.innerHTML = '<div class="empty-state"><h3>暂无文章</h3><p>点击"新建"按钮开始创建</p></div>';
+                articleList.innerHTML = '<div class="empty-state"><h3>暂无文章</h3><p>点击"新增"按钮开始创建</p></div>';
                 return;
             }
+            
+            // 计算序号起始值
+            const startIndex = (currentPage - 1) * pageSize + 1;
+            
             articleList.innerHTML = `
-                <div class="article-header">
-                    <div class="header-title">标题</div>
-                    <div class="header-category">分类</div>
-                    <div class="header-date">发布时间</div>
-                    <div class="header-views">阅读次数</div>
-                    <div class="header-actions">操作</div>
-                </div>
-            ` + articles.map(article => `
-                <div class="article-card">
-                        <div class="article-item">
-                            <div class="article-title" onclick="viewArticle(${article.id})" style="cursor: pointer;"><strong>${escapeHtml(article.title)}</strong></div>
-                            <div class="article-category">${article.category}</div>
-                            <div class="article-date">${formatDate(article.updated_at)}</div>
-                            <div class="article-views-count">
-                                <i class="fa fa-eye" style="font-size: 12px;"></i> ${article.views}
-                            </div>
-                            <div class="article-actions">
-                                <button class="action-btn edit-btn" onclick="editArticle(${article.id})" title="编辑文章">
-                                    <i class="fa fa-pencil" style="font-size: 12px;"></i>
-                                </button>
-                                <button class="action-btn delete-btn" onclick="deleteArticle(${article.id})" title="删除文章">
-                                    <i class="fa fa-trash" style="font-size: 12px;"></i>
-                                </button>
-                            </div>
-                        </div>
+                <div class="main-article-header" style="display: flex; align-items: center; padding: 6px 10px; background: rgba(15, 23, 42, 0.5); border-bottom: 1px solid rgba(148, 163, 184, 0.1); border-radius: 8px 8px 0 0; width: 100%;">
+                    <div class="main-header-checkbox" style="flex: 0.5; text-align: center; font-weight: 500; color: #94a3b8; font-size: 12px;">
+                        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" style="margin: 0;">
                     </div>
-            `).join('');
+                    <div class="main-header-index" style="flex: 1; text-align: center; font-weight: 500; color: #94a3b8; font-size: 12px;">序号</div>
+                    <div class="main-header-title" style="flex: 1.5; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px;">标题</div>
+                    <div class="main-header-category" style="flex: 1; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">分类</div>
+                    <div class="main-header-date" style="flex: 1; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">发布时间</div>
+                    <div class="main-header-views" style="flex: 1; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">阅读次数</div>
+                    <div class="main-header-actions" style="flex: 1; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">操作</div>
+                </div>
+            ` + articles.map((article, index) => {
+                const articleIndex = startIndex + index;
+                return `
+                <div class="main-article-item" data-id="${article.id}" style="display: flex; align-items: center; padding: 6px 10px; border-bottom: 1px solid rgba(148, 163, 184, 0.05); transition: background 0.2s ease; width: 100%;">
+                    <div class="main-article-checkbox" style="flex: 0.5; text-align: center; color: #94a3b8; font-size: 12px;">
+                        <input type="checkbox" class="article-checkbox" value="${article.id}" onchange="updateSelectedCount()" style="margin: 0;">
+                    </div>
+                    <div class="main-article-index" style="flex: 1; text-align: center; color: #94a3b8; font-size: 12px;">${articleIndex}</div>
+                    <div class="main-article-title" onclick="viewArticle(${article.id})" style="flex: 1.5; cursor: pointer; color: #94a3b8; font-size: 12px; padding: 0 5px; text-align: left;">${escapeHtml(article.title)}</div>
+                    <div class="main-article-category" style="flex: 1; color: #94a3b8; font-size: 12px; text-align: center;">${article.category || '未分类'}</div>
+                    <div class="main-article-date" style="flex: 1; color: #94a3b8; font-size: 12px; text-align: center;">${formatDate(article.updated_at)}</div>
+                    <div class="main-article-views-count" style="flex: 1; color: #94a3b8; font-size: 12px; text-align: center;">
+                        <i class="fa fa-eye" style="font-size: 11px; margin-right: 2px;"></i> ${article.views || 0}
+                    </div>
+                    <div class="main-article-actions" style="flex: 1; display: flex; gap: 4px; justify-content: center;">
+                        <button class="action-btn edit-btn" onclick="editArticle(${article.id})" title="编辑文章" style="
+                            padding: 2px 4px;
+                            border: 1px solid rgba(148, 163, 184, 0.3);
+                            background: rgba(30, 41, 59, 0.8);
+                            color: #cbd5e1;
+                            border-radius: 2px;
+                            cursor: pointer;
+                            font-size: 11px;
+                        ">
+                            <i class="fa fa-pencil" style="font-size: 10px;"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteArticle(${article.id})" title="删除文章" style="
+                            padding: 2px 4px;
+                            border: 1px solid rgba(148, 163, 184, 0.3);
+                            background: rgba(30, 41, 59, 0.8);
+                            color: #cbd5e1;
+                            border-radius: 2px;
+                            cursor: pointer;
+                            font-size: 11px;
+                        ">
+                            <i class="fa fa-trash" style="font-size: 10px;"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            }).join('') + `
+                <div class="pagination" style="
+                    margin-top: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 12px;
+                    background: rgba(30, 41, 59, 0.5);
+                    border-radius: 8px;
+                    border: 1px solid rgba(148, 163, 184, 0.1);
+                ">
+                    ${renderPagination()}
+                </div>
+            `;
+            
+            // 添加鼠标悬停效果
+            document.querySelectorAll('.main-article-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(96, 165, 250, 0.1)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.background = 'transparent';
+                });
+            });
+        }
+        
+        function renderPagination() {
+            const totalPages = Math.ceil(totalArticles / pageSize);
+            if (totalPages <= 1) return '';
+            
+            let paginationHTML = '';
+            
+            // 首页按钮
+            paginationHTML += `<button onclick="changePage(1)" class="page-btn ${currentPage === 1 ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${currentPage === 1 ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${currentPage === 1 ? '#64748b' : '#cbd5e1'};
+                border-radius: 6px;
+                cursor: ${currentPage === 1 ? 'not-allowed' : 'pointer'};
+                font-size: 13px;
+                transition: all 0.2s ease;
+            ">
+                <i class="fa fa-angle-double-left"></i>
+            </button>`;
+            
+            // 上一页按钮
+            paginationHTML += `<button onclick="changePage(${currentPage - 1})" class="page-btn ${currentPage === 1 ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${currentPage === 1 ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${currentPage === 1 ? '#64748b' : '#cbd5e1'};
+                border-radius: 6px;
+                cursor: ${currentPage === 1 ? 'not-allowed' : 'pointer'};
+                font-size: 13px;
+                transition: all 0.2s ease;
+            ">
+                <i class="fa fa-angle-left"></i>
+            </button>`;
+            
+            // 页码按钮
+            const showPages = 5; // 显示的页码数量
+            let startPage = Math.max(1, currentPage - Math.floor(showPages / 2));
+            let endPage = Math.min(totalPages, startPage + showPages - 1);
+            
+            // 调整起始页码，确保显示足够的页码
+            if (endPage - startPage + 1 < showPages) {
+                startPage = Math.max(1, endPage - showPages + 1);
+            }
+            
+            // 省略号
+            if (startPage > 1) {
+                paginationHTML += `<span style="color: #94a3b8; font-size: 13px; padding: 0 4px;">...</span>`;
+            }
+            
+            // 页码按钮
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `<button onclick="changePage(${i})" class="page-btn ${currentPage === i ? 'active' : ''}" style="
+                    padding: 6px 12px;
+                    border: 1px solid ${currentPage === i ? 'rgba(96, 165, 250, 0.5)' : 'rgba(148, 163, 184, 0.3)'};
+                    background: ${currentPage === i ? 'rgba(96, 165, 250, 0.15)' : 'rgba(30, 41, 59, 0.8)'};
+                    color: ${currentPage === i ? '#60a5fa' : '#cbd5e1'};
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    transition: all 0.2s ease;
+                ">${i}</button>`;
+            }
+            
+            // 省略号
+            if (endPage < totalPages) {
+                paginationHTML += `<span style="color: #94a3b8; font-size: 13px; padding: 0 4px;">...</span>`;
+            }
+            
+            // 下一页按钮
+            paginationHTML += `<button onclick="changePage(${currentPage + 1})" class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${currentPage === totalPages ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${currentPage === totalPages ? '#64748b' : '#cbd5e1'};
+                border-radius: 6px;
+                cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'};
+                font-size: 13px;
+                transition: all 0.2s ease;
+            ">
+                <i class="fa fa-angle-right"></i>
+            </button>`;
+            
+            // 末页按钮
+            paginationHTML += `<button onclick="changePage(${totalPages})" class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${currentPage === totalPages ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${currentPage === totalPages ? '#64748b' : '#cbd5e1'};
+                border-radius: 6px;
+                cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'};
+                font-size: 13px;
+                transition: all 0.2s ease;
+            ">
+                <i class="fa fa-angle-double-right"></i>
+            </button>`;
+            
+            // 页码信息
+            paginationHTML += `<span style="color: #94a3b8; font-size: 13px; margin-left: 16px;">
+                共 ${totalArticles} 篇，第 ${currentPage}/${totalPages} 页
+            </span>`;
+            
+            return paginationHTML;
+        }
+        
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(totalArticles / pageSize)) return;
+            currentPage = page;
+            loadArticles();
         }
 
         function getCategoryColor(category) {
@@ -2132,13 +2453,55 @@
             }
         }
 
-        function filterByCategory(category) { currentCategory = category; currentTag = null; loadCategories(); loadArticles(); }
-        function filterByTag(tag) { currentTag = tag; currentCategory = null; loadCategories(); loadArticles(); }
-        function showAll() { currentCategory = null; currentTag = null; loadCategories(); loadArticles(); }
+        function filterByCategory(category) {
+            console.log('=== 切换分类 ===');
+            console.log('新分类:', category);
+            currentCategory = category;
+            currentTag = null;
+            currentPage = 1;
+            currentView = 'all';
+            // 显示文章工具栏
+            const toolbar = document.querySelector('.toolbar');
+            if (toolbar) {
+                toolbar.style.display = 'flex';
+            }
+            loadArticles();
+        }
+        function filterByTag(tag) { 
+            currentTag = tag; 
+            currentCategory = null; 
+            currentPage = 1; 
+            currentView = 'all'; 
+            // 显示文章工具栏
+            const toolbar = document.querySelector('.toolbar');
+            if (toolbar) {
+                toolbar.style.display = 'flex';
+            }
+            loadArticles(); 
+        }
+        function showAll() { 
+            currentCategory = null; 
+            currentTag = null; 
+            currentPage = 1; 
+            currentView = 'all'; 
+            // 显示文章工具栏
+            const toolbar = document.querySelector('.toolbar');
+            if (toolbar) {
+                toolbar.style.display = 'flex';
+            }
+            loadArticles(); 
+        }
         function showFavorites() {
             currentCategory = null;
             currentTag = null;
-            fetch(`${API_URL}/articles?favorite=true`).then(res => res.json()).then(articles => renderArticles(articles));
+            currentPage = 1;
+            currentView = 'favorites';
+            // 显示文章工具栏
+            const toolbar = document.querySelector('.toolbar');
+            if (toolbar) {
+                toolbar.style.display = 'flex';
+            }
+            loadArticles();
         }
 
         async function toggleFavorite(id, event) {
@@ -2195,7 +2558,10 @@
 
         async function searchArticles(searchTerm) {
             try {
-                const response = await fetch(`${API_URL}/articles?search=${encodeURIComponent(searchTerm)}`, {
+                console.log('=== 搜索文章 ===');
+                console.log('搜索关键词:', searchTerm);
+                
+                const response = await fetch(`${API_URL}/articles?search=${encodeURIComponent(searchTerm)}&page=${currentPage}&page_size=${pageSize}`, {
                     headers: getAuthHeaders()
                 });
                 
@@ -2207,60 +2573,781 @@
                     throw new Error('搜索失败');
                 }
                 
-                const articles = await response.json();
+                const result = await response.json();
+                console.log('搜索响应:', result);
+                
+                if (!result || !Array.isArray(result.articles)) {
+                    throw new Error('搜索响应格式错误');
+                }
+                
+                const articles = result.articles;
+                totalArticles = result.total || 0;
+                currentView = 'search';
                 renderArticles(articles);
-            } catch (error) { console.error('搜索失败:', error); }
+                renderPagination();
+            } catch (error) { 
+                console.error('搜索失败:', error);
+                const articleList = document.getElementById('articleList');
+                articleList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>搜索失败</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
         }
 
-        async function loadTags() {
+        // 猕猴桃销售模块
+        let kiwiSalesData = [];
+        let kiwiSalesTotal = 0;
+        let kiwiSalesCurrentPage = 1;
+        let kiwiSalesPageSize = 10;
+        let kiwiSalesSelectedIds = [];
+        
+        let kiwiSalesCustomerSearch = '';
+        let kiwiSalesPhoneSearch = '';
+        
+        async function loadKiwiSales() {
             try {
-                const response = await fetch(`${API_URL}/tags`, {
+                let url = `${API_URL}/kiwi-sales?page=${kiwiSalesCurrentPage}&page_size=${kiwiSalesPageSize}`;
+                if (kiwiSalesCustomerSearch) {
+                    url += `&customer=${encodeURIComponent(kiwiSalesCustomerSearch)}`;
+                }
+                if (kiwiSalesPhoneSearch) {
+                    url += `&phone=${encodeURIComponent(kiwiSalesPhoneSearch)}`;
+                }
+                const response = await fetch(url, {
                     headers: getAuthHeaders()
                 });
-                
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        // 未授权，重新检查认证状态
-                        checkAuth();
-                    }
-                    throw new Error('加载标签失败');
-                }
-                
-                const tags = await response.json();
-                document.getElementById('tagCloud').innerHTML = tags.length > 0
-                    ? tags.slice(0, 15).map(tag => `<span class="tag" onclick="filterByTag('${tag.name}')" title="使用 ${tag.count} 次">${tag.name} (${tag.count})</span>`).join('')
-                    : '<span style="color:#64748b;font-size:13px;">暂无标签</span>';
-            } catch (error) { console.error('加载标签失败:', error); }
+                if (!response.ok) throw new Error('加载销售数据失败');
+                const result = await response.json();
+                kiwiSalesData = result.sales;
+                kiwiSalesTotal = result.total;
+                document.getElementById('kiwiSalesCount').textContent = kiwiSalesTotal;
+                renderKiwiSales();
+                renderKiwiSalesPagination();
+            } catch (error) {
+                console.error('加载销售数据失败:', error);
+            }
         }
-
-        function openTagModal() {
-            document.getElementById('tagModal').classList.add('active');
-            loadTagsForModal();
+        
+        function handleKiwiSearch() {
+            kiwiSalesCustomerSearch = document.getElementById('kiwiCustomerSearch').value.trim();
+            kiwiSalesPhoneSearch = document.getElementById('kiwiPhoneSearch').value.trim();
+            kiwiSalesCurrentPage = 1;
+            loadKiwiSales();
         }
-
-        function closeTagModal() {
-            document.getElementById('tagModal').classList.remove('active');
+        
+        function resetKiwiSearch() {
+            // 清空搜索输入框
+            document.getElementById('kiwiCustomerSearch').value = '';
+            document.getElementById('kiwiPhoneSearch').value = '';
+            // 重置搜索条件
+            kiwiSalesCustomerSearch = '';
+            kiwiSalesPhoneSearch = '';
+            // 重新加载所有订单
+            kiwiSalesCurrentPage = 1;
+            loadKiwiSales();
         }
-
-        async function loadTagsForModal() {
+        
+        function showKiwiSales() {
+            kiwiSalesCurrentPage = 1;
+            kiwiSalesCustomerSearch = '';
+            kiwiSalesPhoneSearch = '';
+            // 隐藏文章工具栏
+            const toolbar = document.querySelector('.toolbar');
+            if (toolbar) {
+                toolbar.style.display = 'none';
+            }
+            document.getElementById('articleList').innerHTML = `
+                <div id="kiwiSalesSection" style="padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="color: #94a3b8; margin: 0; font-size: 14px; text-align: center; flex: 1; font-weight: 500;"><i class="fa fa-lemon-o" style="color: #7CFC00; margin-right: 8px;"></i> 2026猕猴桃销售订单</h2>
+                        <div style="margin-left: 20px; display: flex; gap: 8px;">
+                            <button class="btn btn-secondary" onclick="openKiwiSalesModal()" style="
+                                padding: 12px 24px;
+                                border: 1px solid rgba(148, 163, 184, 0.1);
+                                background: rgba(255,255,255,0.05);
+                                color: #cbd5e1;
+                                border-radius: 12px;
+                                cursor: pointer;
+                                font-size: 14px;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                            ">+ 新增订单</button>
+                            <button class="btn btn-secondary" onclick="exportKiwiSalesToExcel()" style="
+                                padding: 12px 24px;
+                                border: 1px solid rgba(148, 163, 184, 0.1);
+                                background: rgba(255,255,255,0.05);
+                                color: #cbd5e1;
+                                border-radius: 12px;
+                                cursor: pointer;
+                                font-size: 14px;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                            ">导出Excel</button>
+                            <button class="btn btn-danger" onclick="deleteSelectedKiwiSales()" style="
+                                display: none;
+                                padding: 12px 24px;
+                                border: 1px solid rgba(239, 68, 68, 0.3);
+                                background: rgba(239, 68, 68, 0.1);
+                                color: #f87171;
+                                border-radius: 12px;
+                                cursor: pointer;
+                                font-size: 14px;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                            " id="deleteKiwiSalesBtn">删除选中</button>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 15px; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <label style="font-size: 12px; color: #94a3b8;">客户名：</label>
+                            <input type="text" id="kiwiCustomerSearch" placeholder="搜索客户名..." style="
+                                width: 180px;
+                                padding: 8px 12px;
+                                border: 1px solid rgba(148, 163, 184, 0.2);
+                                border-radius: 6px;
+                                background: rgba(30, 41, 59, 0.8);
+                                color: #cbd5e1;
+                                font-size: 12px;
+                            ">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <label style="font-size: 12px; color: #94a3b8;">客户电话：</label>
+                            <input type="text" id="kiwiPhoneSearch" placeholder="搜索客户电话..." style="
+                                width: 180px;
+                                padding: 8px 12px;
+                                border: 1px solid rgba(148, 163, 184, 0.2);
+                                border-radius: 6px;
+                                background: rgba(30, 41, 59, 0.8);
+                                color: #cbd5e1;
+                                font-size: 12px;
+                            ">
+                        </div>
+                        <button class="btn btn-secondary" onclick="handleKiwiSearch()" style="padding: 8px 16px; font-size: 12px; font-weight: 500; margin-left: 10px;">
+                            <i class="fa fa-search"></i> 搜索
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetKiwiSearch()" style="padding: 8px 16px; font-size: 12px; font-weight: 500; margin-left: 10px;">
+                            <i class="fa fa-refresh"></i> 重置
+                        </button>
+                    </div>
+                    <div class="main-article-header" style="display: flex; align-items: center; padding: 6px 10px; background: rgba(15, 23, 42, 0.5); border-bottom: 1px solid rgba(148, 163, 184, 0.1); border-radius: 8px 8px 0 0; width: 100%;">
+                        <div style="flex: 0.5; text-align: center; font-weight: 500; color: #94a3b8; font-size: 12px;">
+                            <input type="checkbox" id="selectAllKiwiSales" onchange="toggleSelectAllKiwiSales(this)" style="
+                                width: 14px;
+                                height: 14px;
+                                accent-color: #22c55e;
+                                cursor: pointer;
+                            ">
+                        </div>
+                        <div class="main-header-index" style="flex: 0.8; text-align: center; font-weight: 500; color: #94a3b8; font-size: 12px;">序号</div>
+                        <div class="main-header-customer" style="flex: 1.2; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px;">客户名</div>
+                        <div class="main-header-phone" style="flex: 1.2; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px;">电话</div>
+                        <div class="main-header-address" style="flex: 2; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px;">地址</div>
+                        <div class="main-header-order-date" style="flex: 1; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">接单日期</div>
+                        <div class="main-header-status" style="flex: 1; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">状态</div>
+                        <div class="main-header-tracking" style="flex: 1.5; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px; white-space: nowrap;">运单号</div>
+                        <div class="main-header-remark" style="flex: 0.8; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">备注</div>
+                        <div class="main-header-quantity" style="flex: 0.6; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">数量</div>
+                        <div class="main-header-payment" style="flex: 0.8; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">支付金额</div>
+                        <div class="main-header-actions" style="flex: 0.8; font-weight: 500; color: #94a3b8; font-size: 12px; text-align: center;">操作</div>
+                    </div>
+                    <div id="kiwiSalesTableBody"></div>
+                    <div class="pagination" id="kiwiSalesPagination" style="
+                        margin-top: 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 8px;
+                        padding: 12px;
+                        background: rgba(30, 41, 59, 0.5);
+                        border-radius: 8px;
+                        border: 1px solid rgba(148, 163, 184, 0.1);
+                    "></div>
+                </div>
+            `;
+            loadKiwiSales();
+        }
+        
+        function renderKiwiSales() {
+            const tbody = document.getElementById('kiwiSalesTableBody');
+            if (!tbody) return;
+            if (kiwiSalesData.length === 0) {
+                tbody.innerHTML = '<div style="padding: 40px; text-align: center; color: #64748b; font-size: 12px;">暂无订单数据</div>';
+                return;
+            }
+            tbody.innerHTML = kiwiSalesData.map((sale, index) => `
+                <div class="main-article-item" data-id="${sale.id}" style="display: flex; align-items: center; padding: 6px 10px; border-bottom: 1px solid rgba(148, 163, 184, 0.05); transition: background 0.2s ease; width: 100%;">
+                    <div style="flex: 0.5; text-align: center;">
+                        <input type="checkbox" class="kiwi-sales-checkbox" value="${sale.id}" onchange="updateKiwiSalesDeleteButton()" style="
+                            width: 14px;
+                            height: 14px;
+                            accent-color: #22c55e;
+                            cursor: pointer;
+                        ">
+                    </div>
+                    <div class="main-article-index" style="flex: 0.8; text-align: center; color: #94a3b8; font-size: 12px;">${index + 1}</div>
+                    <div class="main-article-customer" style="flex: 1.2; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px;">${escapeHtml(sale.customer_name)}</div>
+                    <div class="main-article-phone" style="flex: 1.2; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px;">${escapeHtml(sale.phone)}</div>
+                    <div class="main-article-address" style="flex: 2; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px; word-break: break-word;">${escapeHtml(sale.address)}</div>
+                    <div class="main-article-order-date" style="flex: 1; color: #94a3b8; font-size: 12px; text-align: center;">${sale.order_date}</div>
+                    <div class="main-article-status" style="flex: 1; color: #94a3b8; font-size: 12px; text-align: center;">${sale.status || '未发货'}</div>
+                    <div class="main-article-tracking" style="flex: 1.5; color: #94a3b8; font-size: 12px; text-align: left; padding: 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${sale.tracking_number || '-'}</div>
+                    <div class="main-article-remark" style="flex: 0.8; color: #94a3b8; font-size: 12px; text-align: center;">${sale.remark || '-'}</div>
+                    <div class="main-article-quantity" style="flex: 0.6; color: #94a3b8; font-size: 12px; text-align: center;">${sale.quantity || 0}</div>
+                    <div class="main-article-payment" style="flex: 0.8; color: #94a3b8; font-size: 12px; text-align: center;">${(sale.payment_amount || 0).toFixed(2)}</div>
+                    <div class="main-article-actions" style="flex: 0.8; display: flex; gap: 4px; justify-content: center;">
+                        <button class="action-btn edit-btn" onclick="editKiwiSale(${sale.id})" title="编辑订单" style="
+                            padding: 4px 8px;
+                            border: 1px solid rgba(148, 163, 184, 0.3);
+                            background: rgba(30, 41, 59, 0.8);
+                            color: #cbd5e1;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 11px;
+                            margin-right: 4px;
+                        ">
+                            <i class="fa fa-pencil" style="font-size: 10px;"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteKiwiSale(${sale.id})" title="删除订单" style="
+                            padding: 4px 8px;
+                            border: 1px solid rgba(148, 163, 184, 0.3);
+                            background: rgba(30, 41, 59, 0.8);
+                            color: #cbd5e1;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 11px;
+                        ">
+                            <i class="fa fa-trash" style="font-size: 10px;"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // 添加鼠标悬停效果
+            document.querySelectorAll('.main-article-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(96, 165, 250, 0.1)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.background = 'transparent';
+                });
+            });
+        }
+        
+        function renderKiwiSalesPagination() {
+            const pagination = document.getElementById('kiwiSalesPagination');
+            if (!pagination) return;
+            
+            const totalPages = Math.ceil(kiwiSalesTotal / kiwiSalesPageSize);
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            const showPages = 5;
+            
+            // 首页按钮
+            paginationHTML += `<button onclick="changeKiwiSalesPage(1)" class="page-btn ${kiwiSalesCurrentPage === 1 ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${kiwiSalesCurrentPage === 1 ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${kiwiSalesCurrentPage === 1 ? '#64748b' : '#cbd5e1'};
+                border-radius: 4px;
+                cursor: ${kiwiSalesCurrentPage === 1 ? 'not-allowed' : 'pointer'};
+                font-size: 12px;
+            ">
+                首页
+            </button>`;
+            
+            // 上一页按钮
+            paginationHTML += `<button onclick="changeKiwiSalesPage(${kiwiSalesCurrentPage - 1})" class="page-btn ${kiwiSalesCurrentPage === 1 ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${kiwiSalesCurrentPage === 1 ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${kiwiSalesCurrentPage === 1 ? '#64748b' : '#cbd5e1'};
+                border-radius: 4px;
+                cursor: ${kiwiSalesCurrentPage === 1 ? 'not-allowed' : 'pointer'};
+                font-size: 12px;
+            ">
+                上一页
+            </button>`;
+            
+            // 页码按钮
+            let startPage = Math.max(1, kiwiSalesCurrentPage - Math.floor(showPages / 2));
+            let endPage = Math.min(totalPages, startPage + showPages - 1);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `<button onclick="changeKiwiSalesPage(${i})" class="page-btn ${kiwiSalesCurrentPage === i ? 'active' : ''}" style="
+                    padding: 6px 12px;
+                    border: 1px solid ${kiwiSalesCurrentPage === i ? 'rgba(96, 165, 250, 0.5)' : 'rgba(148, 163, 184, 0.3)'};
+                    background: ${kiwiSalesCurrentPage === i ? 'rgba(96, 165, 250, 0.15)' : 'rgba(30, 41, 59, 0.8)'};
+                    color: ${kiwiSalesCurrentPage === i ? '#60a5fa' : '#cbd5e1'};
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 12px;
+                ">
+                    ${i}
+                </button>`;
+            }
+            
+            // 下一页按钮
+            paginationHTML += `<button onclick="changeKiwiSalesPage(${kiwiSalesCurrentPage + 1})" class="page-btn ${kiwiSalesCurrentPage === totalPages ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${kiwiSalesCurrentPage === totalPages ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${kiwiSalesCurrentPage === totalPages ? '#64748b' : '#cbd5e1'};
+                border-radius: 4px;
+                cursor: ${kiwiSalesCurrentPage === totalPages ? 'not-allowed' : 'pointer'};
+                font-size: 12px;
+            ">
+                下一页
+            </button>`;
+            
+            // 末页按钮
+            paginationHTML += `<button onclick="changeKiwiSalesPage(${totalPages})" class="page-btn ${kiwiSalesCurrentPage === totalPages ? 'disabled' : ''}" style="
+                padding: 6px 12px;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                background: ${kiwiSalesCurrentPage === totalPages ? 'rgba(15, 23, 42, 0.5)' : 'rgba(30, 41, 59, 0.8)'};
+                color: ${kiwiSalesCurrentPage === totalPages ? '#64748b' : '#cbd5e1'};
+                border-radius: 4px;
+                cursor: ${kiwiSalesCurrentPage === totalPages ? 'not-allowed' : 'pointer'};
+                font-size: 12px;
+            ">
+                末页
+            </button>`;
+            
+            // 页码信息
+            paginationHTML += `<span style="
+                color: #94a3b8;
+                font-size: 12px;
+                margin-left: 16px;
+            ">
+                共 ${kiwiSalesTotal} 条，第 ${kiwiSalesCurrentPage}/${totalPages} 页
+            </span>`;
+            
+            pagination.innerHTML = paginationHTML;
+        }
+        
+        function changeKiwiSalesPage(page) {
+            const totalPages = Math.ceil(kiwiSalesTotal / kiwiSalesPageSize);
+            if (page < 1 || page > totalPages) return;
+            kiwiSalesCurrentPage = page;
+            loadKiwiSales();
+        }
+        
+        function showKiwiReportPage() {
+            // 隐藏文章工具栏
+            const toolbar = document.querySelector('.toolbar');
+            if (toolbar) {
+                toolbar.style.display = 'none';
+            }
+            document.getElementById('articleList').innerHTML = `
+                <div id="kiwiReportSection" style="padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="color: #94a3b8; margin: 0; font-size: 14px; text-align: center; flex: 1; font-weight: 500;"><i class="fa fa-lemon-o" style="color: #7CFC00; margin-right: 8px;"></i> 销售报表统计</h2>
+                    </div>
+                    <div id="kiwiReportContent"></div>
+                </div>
+            `;
+            loadKiwiReport();
+        }
+        
+        // 猕猴桃销售报表统计模块
+        let kiwiReportData = [];
+        let kiwiReportPage = 1;
+        let kiwiReportPageSize = 10;
+        let kiwiReportTotalPages = 1;
+        let kiwiReportTotalCustomers = 0;
+        
+        async function loadKiwiReport() {
             try {
-                const response = await fetch(`${API_URL}/tags`, {
+                const response = await fetch(`${API_URL}/kiwi-sales-report?page=${kiwiReportPage}&page_size=${kiwiReportPageSize}`, {
                     headers: getAuthHeaders()
                 });
-                
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        // 未授权，重新检查认证状态
-                        checkAuth();
+                if (!response.ok) throw new Error('加载报表失败');
+                const data = await response.json();
+                kiwiReportData = data.report || [];
+                kiwiReportPage = data.page || 1;
+                kiwiReportPageSize = data.page_size || 10;
+                kiwiReportTotalPages = data.total_pages || 1;
+                kiwiReportTotalCustomers = data.total_customers || 0;
+                renderKiwiReport();
+            } catch (error) {
+                console.error('加载报表失败:', error);
+            }
+        }
+        
+        function renderKiwiReport() {
+            const container = document.getElementById('kiwiReportContent');
+            if (!container) return;
+            
+            if (kiwiReportData.length === 0) {
+                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #64748b; font-size: 14px;">暂无报表数据</div>';
+                return;
+            }
+            
+            // 计算规格汇总
+            const specSummary = {};
+            let totalGrandAmount = 0;
+            
+            kiwiReportData.forEach(item => {
+                const spec = item.remark || '未分类';
+                if (!specSummary[spec]) {
+                    specSummary[spec] = {
+                        quantity: 0,
+                        amount: 0
+                    };
+                }
+                specSummary[spec].quantity += item.total_quantity || 0;
+                specSummary[spec].amount += item.total_amount || 0;
+                totalGrandAmount += item.total_amount || 0;
+            });
+            
+            // 计算总数量
+            let totalGrandQuantity = 0;
+            Object.values(specSummary).forEach(spec => {
+                totalGrandQuantity += spec.quantity;
+            });
+            
+            // 按客户名分组汇总
+            const grouped = {};
+            kiwiReportData.forEach(item => {
+                if (!grouped[item.customer_name]) {
+                    grouped[item.customer_name] = {
+                        customer_name: item.customer_name,
+                        items: [],
+                        total_quantity: 0,
+                        total_amount: 0
+                    };
+                }
+                grouped[item.customer_name].items.push(item);
+                grouped[item.customer_name].total_quantity += item.total_quantity || 0;
+                grouped[item.customer_name].total_amount += item.total_amount || 0;
+            });
+            
+            let html = '';
+            
+            // 添加汇总统计
+            html += `
+                <div style="margin-bottom: 16px; background: rgba(30, 41, 59, 0.8); border-radius: 12px; padding: 14px; border: 1px solid rgba(148, 163, 184, 0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
+                        <h3 style="margin: 0; color: #e2e8f0; font-size: 15px; font-weight: 600; flex: 1;">汇总统计</h3>
+                        <div style="width: 80px; text-align: center; flex-shrink: 0;">
+                            <span style="color: #94a3b8; font-size: 15px;">总数量: <strong style="color: #22c55e;">${totalGrandQuantity}</strong></span>
+                        </div>
+                        <div style="text-align: right; white-space: nowrap; flex-shrink: 0;">
+                            <span style="color: #94a3b8; font-size: 15px;">总金额: <strong style="color: #22c55e;">¥${totalGrandAmount.toFixed(2)}</strong></span>
+                        </div>
+                    </div>
+                    <div style="display: table; width: 100%; table-layout: auto;">
+                        <div style="display: table-header-group;">
+                            <div style="display: table-row;">
+                                <div style="display: table-cell; padding: 6px 10px; color: #94a3b8; font-size: 15px; font-weight: 500; width: 50%;">规格</div>
+                                <div style="display: table-cell; padding: 6px 10px; color: #94a3b8; font-size: 15px; font-weight: 500; text-align: center; width: 80px; min-width: 80px;">数量</div>
+                                <div style="display: table-cell; padding: 6px 10px; color: #94a3b8; font-size: 15px; font-weight: 500; text-align: right; white-space: nowrap;">金额</div>
+                            </div>
+                        </div>
+                        <div style="display: table-row-group;">
+                            ${Object.entries(specSummary).map(([spec, data]) => `
+                                <div style="display: table-row;">
+                                    <div style="display: table-cell; padding: 5px 10px; color: #cbd5e1; font-size: 13px;">${spec}</div>
+                                    <div style="display: table-cell; padding: 5px 10px; color: #cbd5e1; font-size: 13px; text-align: center;">${data.quantity}</div>
+                                    <div style="display: table-cell; padding: 5px 10px; color: #cbd5e1; font-size: 13px; text-align: right;">¥${data.amount.toFixed(2)}</div>
+                                </div>
+                            `).join('')}
+                            <!-- 合计行 -->
+                            <div style="display: table-row; background: rgba(34, 197, 94, 0.1); border-top: 1px solid rgba(34, 197, 94, 0.3);">
+                                <div style="display: table-cell; padding: 7px 10px; color: #22c55e; font-size: 13px; font-weight: 600;">合计</div>
+                                <div style="display: table-cell; padding: 7px 10px; color: #22c55e; font-size: 13px; font-weight: 600; text-align: center;">${totalGrandQuantity}</div>
+                                <div style="display: table-cell; padding: 7px 10px; color: #22c55e; font-size: 13px; font-weight: 600; text-align: right;">¥${totalGrandAmount.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            Object.values(grouped).forEach(customer => {
+                html += `
+                    <div style="margin-bottom: 16px; background: rgba(30, 41, 59, 0.8); border-radius: 12px; padding: 14px; border: 1px solid rgba(148, 163, 184, 0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
+                            <h3 style="margin: 0; color: #e2e8f0; font-size: 15px; font-weight: 600; flex: 1;">${escapeHtml(customer.customer_name)}</h3>
+                            <div style="width: 80px; text-align: center; flex-shrink: 0;">
+                                <span style="color: #94a3b8; font-size: 15px;">总数量: <strong style="color: #22c55e;">${customer.total_quantity}</strong></span>
+                            </div>
+                            <div style="text-align: right; white-space: nowrap; flex-shrink: 0;">
+                                <span style="color: #94a3b8; font-size: 15px;">总金额: <strong style="color: #22c55e;">¥${customer.total_amount.toFixed(2)}</strong></span>
+                            </div>
+                        </div>
+                        <div style="display: table; width: 100%; table-layout: auto;">
+                            <div style="display: table-header-group;">
+                                <div style="display: table-row;">
+                                    <div style="display: table-cell; padding: 6px 10px; color: #94a3b8; font-size: 15px; font-weight: 500; width: 50%;">规格</div>
+                                    <div style="display: table-cell; padding: 6px 10px; color: #94a3b8; font-size: 15px; font-weight: 500; text-align: center; width: 80px; min-width: 80px;">数量</div>
+                                    <div style="display: table-cell; padding: 6px 10px; color: #94a3b8; font-size: 15px; font-weight: 500; text-align: right; white-space: nowrap;">金额</div>
+                                </div>
+                            </div>
+                            <div style="display: table-row-group;">
+                                ${customer.items.map(item => `
+                                    <div style="display: table-row;">
+                                        <div style="display: table-cell; padding: 5px 10px; color: #cbd5e1; font-size: 13px;">${item.remark || '-'}</div>
+                                        <div style="display: table-cell; padding: 5px 10px; color: #cbd5e1; font-size: 13px; text-align: center;">${item.total_quantity}</div>
+                                        <div style="display: table-cell; padding: 5px 10px; color: #cbd5e1; font-size: 13px; text-align: right;">¥${(item.total_amount || 0).toFixed(2)}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // 添加分页控件
+            if (kiwiReportTotalPages > 1) {
+                html += `
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; background: rgba(30, 41, 59, 0.5); border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.1);">
+                        <button onclick="goToReportPage(${kiwiReportPage - 1})" ${kiwiReportPage === 1 ? 'disabled' : ''} style="padding: 8px 16px; border: 1px solid rgba(148, 163, 184, 0.2); background: rgba(255,255,255,0.05); color: #cbd5e1; border-radius: 6px; cursor: pointer; ${kiwiReportPage === 1 ? 'opacity: 0.5; cursor: not-allowed;' : ''}">上一页</button>
+                        <span style="color: #94a3b8; font-size: 13px;">第 ${kiwiReportPage} / ${kiwiReportTotalPages} 页，共 ${kiwiReportTotalCustomers} 个客户</span>
+                        <button onclick="goToReportPage(${kiwiReportPage + 1})" ${kiwiReportPage === kiwiReportTotalPages ? 'disabled' : ''} style="padding: 8px 16px; border: 1px solid rgba(148, 163, 184, 0.2); background: rgba(255,255,255,0.05); color: #cbd5e1; border-radius: 6px; cursor: pointer; ${kiwiReportPage === kiwiReportTotalPages ? 'opacity: 0.5; cursor: not-allowed;' : ''}">下一页</button>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function goToReportPage(page) {
+            if (page < 1 || page > kiwiReportTotalPages) return;
+            kiwiReportPage = page;
+            loadKiwiReport();
+        }
+        
+        function toggleSelectAllKiwiSales(source) {
+            const checkboxes = document.querySelectorAll('.kiwi-sales-checkbox');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateKiwiSalesDeleteButton();
+        }
+        
+        function updateKiwiSalesDeleteButton() {
+            const checkboxes = document.querySelectorAll('.kiwi-sales-checkbox:checked');
+            const count = checkboxes.length;
+            const deleteBtn = document.getElementById('deleteKiwiSalesBtn');
+            
+            if (count > 0) {
+                deleteBtn.style.display = 'inline-block';
+                deleteBtn.textContent = `删除选中 (${count})`;
+            } else {
+                deleteBtn.style.display = 'none';
+            }
+        }
+        
+        async function deleteSelectedKiwiSales() {
+            const checkedBoxes = document.querySelectorAll('.kiwi-sales-checkbox:checked');
+            const saleIds = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+            
+            if (saleIds.length === 0) {
+                alert('请先选择要删除的订单');
+                return;
+            }
+            
+            if (!confirm(`确定要删除这 ${saleIds.length} 条订单吗？`)) {
+                return;
+            }
+            
+            try {
+                let successCount = 0;
+                for (const id of saleIds) {
+                    const response = await fetch(`${API_URL}/kiwi-sales/${id}`, {
+                        method: 'DELETE',
+                        headers: getAuthHeaders()
+                    });
+                    if (response.ok) {
+                        successCount++;
                     }
-                    throw new Error('加载标签失败');
                 }
                 
-                const tags = await response.json();
-                document.getElementById('tagListModal').innerHTML = tags.length > 0
-                    ? tags.map(tag => `<span class="tag" onclick="filterByTag('${tag.name}'); closeTagModal();" title="使用 ${tag.count} 次">${tag.name} (${tag.count})</span>`).join('')
-                    : '<span style="color:#64748b;font-size:13px;">暂无标签</span>';
-            } catch (error) { console.error('加载标签失败:', error); }
+                if (successCount > 0) {
+                    kiwiSalesCurrentPage = 1;
+                    loadKiwiSales();
+                    loadKiwiSalesCount(); // 更新订单数量
+                    
+                    // 清除选中状态，隐藏删除按钮
+                    const selectAll = document.getElementById('selectAllKiwiSales');
+                    if (selectAll) selectAll.checked = false;
+                    const checkboxes = document.querySelectorAll('.kiwi-sales-checkbox');
+                    checkboxes.forEach(cb => cb.checked = false);
+                    updateKiwiSalesDeleteButton();
+                    
+                    alert(`成功删除 ${successCount} 条订单！`);
+                } else {
+                    throw new Error('删除订单失败');
+                }
+            } catch (error) {
+                console.error('删除订单失败:', error);
+                alert('删除失败，请稍后重试');
+            }
+        }
+        
+        function openKiwiSalesModal(id = null) {
+            document.getElementById('kiwiSalesModal').classList.add('active');
+            document.getElementById('kiwiSalesForm').reset();
+            document.getElementById('kiwiSaleId').value = '';
+            document.getElementById('kiwiSalesModalTitle').textContent = '新增订单';
+            if (id) {
+                const sale = kiwiSalesData.find(s => s.id === id);
+                if (sale) {
+                    document.getElementById('kiwiSaleId').value = sale.id;
+                    document.getElementById('kiwiCustomerName').value = sale.customer_name;
+                    document.getElementById('kiwiPhone').value = sale.phone;
+                    document.getElementById('kiwiAddress').value = sale.address;
+                    document.getElementById('kiwiOrderDate').value = sale.order_date;
+                    document.getElementById('kiwiTrackingNumber').value = sale.tracking_number || '';
+                    document.getElementById('kiwiRemark').value = sale.remark || '';
+                    document.getElementById('kiwiStatus').value = sale.status || '未发货';
+                    document.getElementById('kiwiQuantity').value = sale.quantity || 0;
+                    document.getElementById('kiwiPaymentAmount').value = sale.payment_amount || 0.00;
+                    document.getElementById('kiwiSalesModalTitle').textContent = '编辑订单';
+                }
+            }
+        }
+        
+        function closeKiwiSalesModal() {
+            document.getElementById('kiwiSalesModal').classList.remove('active');
+        }
+        
+        async function saveKiwiSale(event) {
+            event.preventDefault();
+            
+            // 表单验证
+            const customerName = document.getElementById('kiwiCustomerName').value.trim();
+            const phone = document.getElementById('kiwiPhone').value.trim();
+            const address = document.getElementById('kiwiAddress').value.trim();
+            const orderDate = document.getElementById('kiwiOrderDate').value;
+            const status = document.getElementById('kiwiStatus').value;
+            const trackingNumber = document.getElementById('kiwiTrackingNumber').value.trim();
+            const remark = document.getElementById('kiwiRemark').value.trim();
+            const quantity = parseInt(document.getElementById('kiwiQuantity').value) || 0;
+            const paymentAmount = parseFloat(document.getElementById('kiwiPaymentAmount').value) || 0.00;
+
+            // 客户名校验
+            if (!customerName) {
+                alert('请输入客户名');
+                document.getElementById('kiwiCustomerName').focus();
+                return;
+            }
+            if (customerName.length > 50) {
+                alert('客户名不能超过50个字符');
+                document.getElementById('kiwiCustomerName').focus();
+                return;
+            }
+            
+            // 电话校验
+            if (!phone) {
+                alert('请输入电话号码');
+                document.getElementById('kiwiPhone').focus();
+                return;
+            }
+            if (!/^\d{11}$/.test(phone)) {
+                alert('请输入有效的11位手机号码');
+                document.getElementById('kiwiPhone').focus();
+                return;
+            }
+            
+            // 地址校验
+            if (!address) {
+                alert('请输入收货地址');
+                document.getElementById('kiwiAddress').focus();
+                return;
+            }
+            if (address.length > 200) {
+                alert('地址不能超过200个字符');
+                document.getElementById('kiwiAddress').focus();
+                return;
+            }
+            
+            // 接单日期校验
+            if (!orderDate) {
+                alert('请选择接单日期');
+                document.getElementById('kiwiOrderDate').focus();
+                return;
+            }
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const orderDateObj = new Date(orderDate);
+            if (orderDateObj > today) {
+                alert('接单日期不能是未来日期');
+                document.getElementById('kiwiOrderDate').focus();
+                return;
+            }
+            
+
+            
+            // 运单号校验
+            if (trackingNumber && trackingNumber.length > 50) {
+                alert('运单号不能超过50个字符');
+                document.getElementById('kiwiTrackingNumber').focus();
+                return;
+            }
+            
+            // 构建数据
+            const id = document.getElementById('kiwiSaleId').value;
+            const data = {
+                customer_name: customerName,
+                phone: phone,
+                address: address,
+                order_date: orderDate,
+                status: status,
+                tracking_number: trackingNumber,
+                remark: remark,
+                quantity: quantity,
+                payment_amount: paymentAmount
+            };
+            
+            try {
+                const url = id ? `${API_URL}/kiwi-sales/${id}` : `${API_URL}/kiwi-sales`;
+                const method = id ? 'PUT' : 'POST';
+                const response = await fetch(url, {
+                    method,
+                    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error('保存失败');
+                closeKiwiSalesModal();
+                loadKiwiSales();
+                loadKiwiSalesCount(); // 更新订单数量
+                alert(id ? '更新成功' : '添加成功');
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+        
+        function editKiwiSale(id) {
+            openKiwiSalesModal(id);
+        }
+        
+        async function deleteKiwiSale(id) {
+            if (!confirm('确定要删除这条订单吗？')) return;
+            try {
+                const response = await fetch(`${API_URL}/kiwi-sales/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                if (!response.ok) throw new Error('删除失败');
+                loadKiwiSales();
+                loadKiwiSalesCount(); // 更新订单数量
+                
+                // 清除选中状态，隐藏删除按钮
+                const selectAll = document.getElementById('selectAllKiwiSales');
+                if (selectAll) selectAll.checked = false;
+                const checkboxes = document.querySelectorAll('.kiwi-sales-checkbox');
+                checkboxes.forEach(cb => cb.checked = false);
+                updateKiwiSalesDeleteButton();
+                
+                alert('删除成功');
+            } catch (error) {
+                alert(error.message);
+            }
         }
 
         async function loadCategories() {
@@ -2274,13 +3361,35 @@
                 }
                 
                 const categories = await response.json();
+                
+                // 获取总文章数来计算未分类数量
+                const statsResponse = await fetch(`${API_URL}/stats`, {
+                    headers: getAuthHeaders()
+                });
+                const stats = await statsResponse.json();
+                const totalArticles = stats.total_articles || 0;
+                const categorizedCount = categories.reduce((sum, c) => sum + (c.article_count || 0), 0);
+                const uncategorizedCount = totalArticles - categorizedCount;
+                
                 const select = document.getElementById('articleCategory');
                 select.innerHTML = categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+                const uncategorizedHTML = uncategorizedCount > 0 ? `
+                    <div class="category-item ${currentCategory === '未分类' ? 'active' : ''}" onclick="filterByCategory('未分类')">
+                        <div class="category-left"><div class="category-dot" style="background:#94a3b8;"></div><span class="category-name">未分类</span></div>
+                        <div class="category-actions">
+                            <span class="category-count">${uncategorizedCount}</span>
+                        </div>
+                    </div>
+                ` : '';
+                
                 document.getElementById('categoryList').innerHTML = `
                     <div class="category-item ${!currentCategory ? 'active' : ''}" onclick="showAll()">
                         <div class="category-left"><div class="category-dot" style="background:#64748b;"></div><span class="category-name">全部</span></div>
+                        <div class="category-actions">
+                            <span class="category-count">${totalArticles}</span>
+                        </div>
                     </div>
-                ` + categories.map(c => `
+                ` + uncategorizedHTML + categories.map(c => `
                     <div class="category-item ${currentCategory === c.name ? 'active' : ''}" data-category="${c.name}" oncontextmenu="showCategoryContextMenu(event, '${c.name}')">
                         <div class="category-left" onclick="filterByCategory('${c.name}')"><div class="category-dot" style="background:${c.color};"></div><span class="category-name">${c.name}</span></div>
                         <div class="category-actions">
@@ -2293,26 +3402,29 @@
                             background: rgba(30, 41, 59, 0.95);
                             border: 1px solid rgba(148, 163, 184, 0.2);
                             border-radius: 8px;
-                            padding: 8px 0;
+                            padding: 0;
                             z-index: 1000;
-                            min-width: 120px;
-                            max-width: 150px;
+                            min-width: 80px;
+                            max-width: 100px;
                             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
                             right: 0;
-                            top: 100%;
-                            margin-top: 4px;
+                            top: 0;
+                            height: 100%;
                         ">
                             <div class="context-menu-item" onclick="deleteCategory('${c.name}')" style="
-                                padding: 8px 16px;
+                                padding: 0 12px;
                                 cursor: pointer;
                                 transition: background 0.2s ease;
                                 display: flex;
                                 align-items: center;
-                                gap: 8px;
-                                color: #ef4444;
+                                justify-content: center;
+                                gap: 6px;
+                                color: white;
+                                height: 100%;
+                                width: 100%;
                             ">
-                                <i class="fa fa-trash" style="font-size: 12px; color: #ef4444;"></i>
-                                <span>删除分类</span>
+                                <i class="fa fa-trash" style="font-size: 12px; color: white;"></i>
+                                <span style="font-size: 12px;">删除</span>
                             </div>
                         </div>
                     </div>
@@ -2356,7 +3468,7 @@
                 document.getElementById('modalTitle').textContent = '编辑文章';
                 loadArticleForEdit(id);
             } else {
-                document.getElementById('modalTitle').textContent = '新建文章';
+                document.getElementById('modalTitle').textContent = '新增文章';
                 document.getElementById('articleForm').reset();
                 document.getElementById('articleId').value = '';
                 setTimeout(() => {
@@ -2433,6 +3545,30 @@
                         autosave: {
                             enabled: false
                         },
+                        status: [
+                            {
+                                className: 'lines',
+                                defaultValue: function(el) {
+                                    el.innerHTML = '行数: 0';
+                                },
+                                onUpdate: function(el) {
+                                    const text = easyMDE.value();
+                                    const lines = text.split('\n').length;
+                                    el.innerHTML = '行数: ' + lines;
+                                }
+                            },
+                            {
+                                className: 'words',
+                                defaultValue: function(el) {
+                                    el.innerHTML = '字数: 0';
+                                },
+                                onUpdate: function(el) {
+                                    const text = easyMDE.value();
+                                    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+                                    el.innerHTML = '字数: ' + words;
+                                }
+                            }
+                        ],
                         toolbar: [
                             'bold', 'italic', 'heading', '|',
                             {
@@ -2567,16 +3703,6 @@
                             langPrefix: 'language-'  
                         },
                         codemirrorOptions: {
-                            mode: {
-                                name: 'markdown',
-                                highlightFormatting: true,
-                                codeBlocks: {
-                                    python: true,
-                                    javascript: true,
-                                    html: true,
-                                    css: true
-                                }
-                            },
                             lineNumbers: true,
                             lineWrapping: true,
                             matchBrackets: true,
@@ -2588,7 +3714,14 @@
                             gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
                             foldGutter: true,
                             indentUnit: 4,
-                            indentWithTabs: false
+                            indentWithTabs: false,
+                            // 确保Python语法高亮正常工作
+                            mode: {
+                                name: 'markdown',
+                                codeBlocks: {
+                                    python: 'python'
+                                }
+                            }
                         }
                     });
                 }, 100);
@@ -2690,6 +3823,30 @@
                         autosave: {
                             enabled: false
                         },
+                        status: [
+                            {
+                                className: 'lines',
+                                defaultValue: function(el) {
+                                    el.innerHTML = '行数: 0';
+                                },
+                                onUpdate: function(el) {
+                                    const text = easyMDE.value();
+                                    const lines = text.split('\n').length;
+                                    el.innerHTML = '行数: ' + lines;
+                                }
+                            },
+                            {
+                                className: 'words',
+                                defaultValue: function(el) {
+                                    el.innerHTML = '字数: 0';
+                                },
+                                onUpdate: function(el) {
+                                    const text = easyMDE.value();
+                                    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+                                    el.innerHTML = '字数: ' + words;
+                                }
+                            }
+                        ],
                         toolbar: [
                             'bold', 'italic', 'heading', '|',
                             {
@@ -2824,16 +3981,6 @@
                             langPrefix: 'language-'  
                         },
                         codemirrorOptions: {
-                            mode: {
-                                name: 'markdown',
-                                highlightFormatting: true,
-                                codeBlocks: {
-                                    python: true,
-                                    javascript: true,
-                                    html: true,
-                                    css: true
-                                }
-                            },
                             lineNumbers: true,
                             lineWrapping: true,
                             matchBrackets: true,
@@ -2845,7 +3992,14 @@
                             gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
                             foldGutter: true,
                             indentUnit: 4,
-                            indentWithTabs: false
+                            indentWithTabs: false,
+                            // 确保Python语法高亮正常工作
+                            mode: {
+                                name: 'markdown',
+                                codeBlocks: {
+                                    python: 'python'
+                                }
+                            }
                         }
                     });
                 }, 100);
@@ -2932,7 +4086,6 @@
                 easyMDE = null;
                 loadArticles();
                 loadCategories();
-                loadTags();
                 loadStats();
                 
                 // 添加成功提示
@@ -3037,8 +4190,15 @@
                 
                 loadArticles();
                 loadCategories();
-                loadTags();
                 loadStats();
+                
+                // 清除选中状态，隐藏删除按钮
+                const selectAll = document.getElementById('selectAll');
+                if (selectAll) selectAll.checked = false;
+                const checkboxes = document.querySelectorAll('.article-checkbox');
+                checkboxes.forEach(cb => cb.checked = false);
+                updateSelectedCount();
+                
                 alert('文章删除成功！');
             } catch (error) {
                 console.error('删除文章失败:', error);
@@ -3047,6 +4207,77 @@
                     // 可能是未登录，重新检查认证状态
                     checkAuth();
                 }
+            }
+        }
+
+        function toggleSelectAll(checkbox) {
+            const checkboxes = document.querySelectorAll('.article-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+            });
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            const checkedBoxes = document.querySelectorAll('.article-checkbox:checked');
+            const count = checkedBoxes.length;
+            const deleteBtn = document.getElementById('deleteSelectedBtn');
+            
+            if (count > 0) {
+                deleteBtn.style.display = 'inline-block';
+                deleteBtn.textContent = `删除选中 (${count})`;
+            } else {
+                deleteBtn.style.display = 'none';
+            }
+        }
+
+        async function deleteSelectedArticles() {
+            const checkedBoxes = document.querySelectorAll('.article-checkbox:checked');
+            const articleIds = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+            
+            if (articleIds.length === 0) {
+                alert('请先选择要删除的文章');
+                return;
+            }
+            
+            if (!confirm(`确定要删除这 ${articleIds.length} 篇文章吗？`)) {
+                return;
+            }
+            
+            try {
+                // 逐个删除文章
+                let successCount = 0;
+                for (const id of articleIds) {
+                    const response = await fetch(`${API_URL}/articles/${id}`, {
+                        method: 'DELETE',
+                        headers: getAuthHeaders()
+                    });
+                    if (response.ok) {
+                        successCount++;
+                    }
+                }
+                
+                if (successCount > 0) {
+                    loadArticles();
+                    loadCategories();
+                    loadStats();
+                    
+                    // 清除选中状态，隐藏删除按钮
+                    const selectAll = document.getElementById('selectAll');
+                    if (selectAll) selectAll.checked = false;
+                    const checkboxes = document.querySelectorAll('.article-checkbox');
+                    checkboxes.forEach(cb => cb.checked = false);
+                    updateSelectedCount();
+                    
+                    alert(`成功删除 ${successCount} 篇文章！`);
+                } else {
+                    throw new Error('删除文章失败');
+                }
+            } catch (error) {
+                console.error('删除文章失败:', error);
+                alert('删除失败，请稍后重试');
+                // 可能是未登录，重新检查认证状态
+                checkAuth();
             }
         }
 
@@ -3172,7 +4403,9 @@
         }
         
         try {
-            const response = await fetch(`${API_URL}/categories/${encodeURIComponent(categoryName)}`, {
+            // 确保分类名称是字符串类型
+            const categoryNameStr = String(categoryName);
+            const response = await fetch(`${API_URL}/categories/${encodeURIComponent(categoryNameStr)}`, {
                 method: 'DELETE',
                 headers: getAuthHeaders()
             });
@@ -3195,28 +4428,7 @@
     }
 
     // 文章右键菜单相关函数
-        function showArticleContextMenu(e, articleId, articleTitle) {
-            e.preventDefault();
-            
-            currentArticleId = articleId;
-            currentArticleTitle = articleTitle;
-            
-            const menu = document.getElementById('articleContextMenu');
-            menu.style.display = 'block';
-            menu.style.left = e.clientX + 'px';
-            menu.style.top = e.clientY + 'px';
-            
-            // 更新收藏菜单项文本
-            updateFavoriteMenuItem();
-        }
 
-        function closeArticleContextMenu() {
-            const menu = document.getElementById('articleContextMenu');
-            if (menu) {
-                menu.style.display = 'none';
-            }
-        }
-        
         // 关闭分类右键菜单
         function closeCategoryContextMenu() {
             const menu = document.getElementById('categoryContextMenu');
@@ -3251,99 +4463,10 @@
             });
         });
 
-        function updateFavoriteMenuItem() {
-            if (!currentArticleId) return;
-            
-            // 这里简化处理，实际应该根据文章的收藏状态来更新
-            const menuItem = document.getElementById('favoriteMenuItem');
-            if (menuItem) {
-                menuItem.textContent = '置顶文档';
-            }
-        }
-
-        async function renameArticle() {
-            if (!currentArticleId) return;
-            
-            const newTitle = prompt('请输入新的文档名称:', currentArticleTitle);
-            if (newTitle && newTitle.trim() !== '') {
-                try {
-                    await fetch(`${API_URL}/articles/${currentArticleId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ title: newTitle.trim() })
-                    });
-                    loadArticles();
-                } catch (error) {
-                    console.error('重命名文章失败:', error);
-                }
-            }
-            closeArticleContextMenu();
-        }
-
         function editArticle(id) {
             if (!id) return;
             
             openModal(id);
-        }
-
-        function copyArticleLink() {
-            if (!currentArticleId) return;
-            
-            const link = `${window.location.origin}/knowledge_base?article=${currentArticleId}`;
-            navigator.clipboard.writeText(link).then(() => {
-                alert('链接已复制到剪贴板！');
-            }).catch(err => {
-                console.error('复制链接失败:', err);
-            });
-            closeArticleContextMenu();
-        }
-
-        function openArticleInNewTab() {
-            if (!currentArticleId) return;
-            
-            const url = './';
-            window.open(url, '_blank');
-            closeArticleContextMenu();
-        }
-
-        async function exportArticle() {
-            if (!currentArticleId) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/articles/${currentArticleId}`);
-                const article = await response.json();
-                
-                const content = `# ${article.title}\n\n${article.content}`;
-                const blob = new Blob([content], { type: 'text/markdown' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${article.title}.md`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            } catch (error) {
-                console.error('导出文章失败:', error);
-                alert('导出失败，请重试');
-            }
-            closeArticleContextMenu();
-        }
-
-        function toggleFavoriteArticle() {
-            if (!currentArticleId) return;
-            
-            toggleFavorite(currentArticleId);
-            closeArticleContextMenu();
-        }
-
-        async function deleteArticleFromMenu() {
-            if (!currentArticleId) return;
-            
-            if (confirm(`确定要删除文章 "${currentArticleTitle}" 吗？`)) {
-                await deleteArticle(currentArticleId);
-            }
-            closeArticleContextMenu();
         }
 
         // 修复后的viewArticle函数
