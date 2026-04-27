@@ -911,8 +911,8 @@ def get_kiwi_sales_report():
 if __name__ == '__main__':
     init_db()
     print("=" * 60)
-    print("  个人知识库服务已启动！")
-    print("  访问地址: http://localhost:5000")
+    print("  智慧管理中心已启动！")
+    print("  访问地址: http://localhost:5001")
     print("  按 Ctrl+C 停止服务")
     print("=" * 60)
     app.run(host='0.0.0.0', port=5001, debug=False)

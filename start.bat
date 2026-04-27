@@ -1,9 +1,9 @@
 @echo off
 chcp 65001 >nul
-title 个人知识库服务
+title 智慧管理中心
 
 echo ==========================================
-echo    个人知识库服务启动中...
+echo    智慧管理中心启动中...
 echo ==========================================
 echo.
 
@@ -22,7 +22,7 @@ pip install flask flask-cors -q
 
 echo.
 echo 启动服务...
-echo 请访问: http://localhost:5000
+echo 请访问: http://localhost:5001
 echo 按 Ctrl+C 停止服务
 echo.
 
